@@ -76,8 +76,9 @@ const t = {
     antiSub: "Posicionamento por subtração. Se você precisa disso, não sou a pessoa certa.",
     stackTitle: "Infraestrutura Operacional",
     stackSub: "Não é uma lista de apps. É como as camadas se organizam para produzir output sem atrito.",
-    sinal: "Sinal",
-    sinalTitle: "Fragmentos de sistema",
+    sinal: "Princípios",
+    sinalTitle: "Como o sistema pensa",
+    sinalSub: "Não são frases motivacionais. São os modelos mentais que operam por trás de cada decisão. Cada princípio foi testado em produção.",
     logTitle: "Log do sistema",
     logSub: "Entradas recentes do diário operacional.",
     gateway: "Gateway",
@@ -128,8 +129,9 @@ const t = {
     antiSub: "Positioning by subtraction. If you need this, I'm not the right person.",
     stackTitle: "Operational Infrastructure",
     stackSub: "Not a list of apps. It's how layers organize to produce frictionless output.",
-    sinal: "Signal",
-    sinalTitle: "System fragments",
+    sinal: "Principles",
+    sinalTitle: "How the system thinks",
+    sinalSub: "Not motivational quotes. These are the mental models operating behind every decision. Each principle was tested in production.",
     logTitle: "System log",
     logSub: "Recent entries from the operational journal.",
     gateway: "Gateway",
@@ -419,8 +421,8 @@ function TypingTerminal() {
 /* ═══════════════════════════════════════
    PROOF TICKER (silent social proof)
    ═══════════════════════════════════════ */
-function ProofTicker() {
-  const items = [
+function ProofTicker({ lang }: { lang: Lang }) {
+  const items = lang === "pt" ? [
     "DryOn → HEAD de IA & Growth · sistema de marca completo",
     "PAI (Partners in A.I) → CEO & Founder",
     "Fundo de Investimento → 10+ empresas em portfólio",
@@ -431,6 +433,17 @@ function ProofTicker() {
     "4 idiomas · Vivência internacional · EUA",
     "Gateways de Pagamento → parceria estratégica",
     "Estrutura 360° → conhecimento completo de todas as áreas",
+  ] : [
+    "DryOn → HEAD of AI & Growth · complete brand system",
+    "PAI (Partners in A.I) → CEO & Founder",
+    "Investment Fund → 10+ portfolio companies",
+    "Shield Tech → investor · payment innovation · Rio/Brazil",
+    "CEO Partners → exits above R$ 1BI",
+    "AI Infrastructure → 85% automated decisions",
+    "Digital Assets → scalable portfolio in production",
+    "4 languages · International experience · USA",
+    "Payment Gateways → strategic partnership",
+    "360° Structure → full-stack knowledge across all areas",
   ]
   const doubled = [...items, ...items]
 
@@ -734,16 +747,23 @@ export default function SubstratoPage() {
   }, [])
 
   const sectionNames = lang === "pt"
-    ? ["Tese", "Framework", "Sistema", "Provas", "Stack", "Sinal", "Gateway"]
-    : ["Thesis", "Framework", "System", "Proofs", "Stack", "Signal", "Gateway"]
+    ? ["Tese", "Framework", "Sistema", "Provas", "Stack", "Princípios", "Gateway"]
+    : ["Thesis", "Framework", "System", "Proofs", "Stack", "Principles", "Gateway"]
 
-  const nodes = [
+  const nodes = lang === "pt" ? [
     { label: "Branding Estratégico", description: "Marcas como sistemas vivos — identidade, posicionamento e narrativa como arquitetura.", icon: Hexagon, connections: ["IA", "E-commerce", "Produto"] },
     { label: "IA Aplicada", description: "Inteligência artificial como camada de decisão — automação de processos cognitivos, não de tarefas.", icon: Cpu, connections: ["Automação", "Produto", "Escala"] },
     { label: "E-commerce & Performance", description: "Sistemas de aquisição e conversão engenhados para escala composta.", icon: Target, connections: ["Branding", "IA", "Ecossistema"] },
     { label: "Arquitetura de Produto", description: "Produtos digitais pela lente de sistemas — cada feature é uma decisão estrutural.", icon: Layers, connections: ["Branding", "Automação", "IA"] },
     { label: "Automação & Prompts", description: "Infraestrutura invisível que elimina atrito — da operação à criação.", icon: Zap, connections: ["IA", "Produto", "Ecossistema"] },
     { label: "Ecossistemas Digitais", description: "Plataformas onde cada parte alimenta o todo — efeitos de rede por design.", icon: GitBranch, connections: ["Branding", "E-commerce", "Produto"] },
+  ] : [
+    { label: "Strategic Branding", description: "Brands as living systems — identity, positioning, and narrative as architecture.", icon: Hexagon, connections: ["AI", "E-commerce", "Product"] },
+    { label: "Applied AI", description: "Artificial intelligence as a decision layer — automating cognitive processes, not tasks.", icon: Cpu, connections: ["Automation", "Product", "Scale"] },
+    { label: "E-commerce & Performance", description: "Acquisition and conversion systems engineered for compound scale.", icon: Target, connections: ["Branding", "AI", "Ecosystem"] },
+    { label: "Product Architecture", description: "Digital products through a systems lens — every feature is a structural decision.", icon: Layers, connections: ["Branding", "Automation", "AI"] },
+    { label: "Automation & Prompts", description: "Invisible infrastructure that eliminates friction — from operations to creation.", icon: Zap, connections: ["AI", "Product", "Ecosystem"] },
+    { label: "Digital Ecosystems", description: "Platforms where every part feeds the whole — network effects by design.", icon: GitBranch, connections: ["Branding", "E-commerce", "Product"] },
   ]
 
   const cases = [
@@ -810,33 +830,54 @@ export default function SubstratoPage() {
     },
   ]
 
-  const layers = [
+  const layers = lang === "pt" ? [
     { name: "Visão", desc: "O que o mercado ainda não vê", detail: "Identificar padrões antes que virem consenso", icon: Brain },
     { name: "Arquitetura", desc: "Como as peças se conectam", detail: "Decisões estruturais que definem o jogo", icon: Network },
     { name: "Execução", desc: "Do blueprint à realidade", detail: "Shipping > theorizing. Sempre.", icon: Rocket },
     { name: "Escala", desc: "Sistemas que crescem sozinhos", detail: "Construir para funcionar sem você", icon: TrendingUp },
+  ] : [
+    { name: "Vision", desc: "What the market doesn't see yet", detail: "Identify patterns before they become consensus", icon: Brain },
+    { name: "Architecture", desc: "How the pieces connect", detail: "Structural decisions that define the game", icon: Network },
+    { name: "Execution", desc: "From blueprint to reality", detail: "Shipping > theorizing. Always.", icon: Rocket },
+    { name: "Scale", desc: "Systems that grow on their own", detail: "Build to work without you", icon: TrendingUp },
   ]
 
-  const antiItems = [
+  const antiItems = lang === "pt" ? [
     "Identidade visual sem estratégia por trás",
     "Automação de processos que já estão quebrados",
     "Marketing de performance sem arquitetura de marca",
     "Consultoria genérica — cada sistema é único",
     "Projetos sem visão de longo prazo",
+  ] : [
+    "Visual identity without strategy behind it",
+    "Automating processes that are already broken",
+    "Performance marketing without brand architecture",
+    "Generic consulting — every system is unique",
+    "Projects without long-term vision",
   ]
 
-  const stackLayers = [
+  const stackLayers = lang === "pt" ? [
     { name: "Decisão", tools: "First Principles · Systems Thinking · Mental Models", icon: Brain },
     { name: "Criação", tools: "AI Pipelines · Prompt Architecture · LLM Chains", icon: Code },
     { name: "Distribuição", tools: "Performance Marketing · E-commerce · Content Systems", icon: BarChart3 },
     { name: "Automação", tools: "n8n · Custom APIs · Autonomous Agents", icon: Bot },
+  ] : [
+    { name: "Decision", tools: "First Principles · Systems Thinking · Mental Models", icon: Brain },
+    { name: "Creation", tools: "AI Pipelines · Prompt Architecture · LLM Chains", icon: Code },
+    { name: "Distribution", tools: "Performance Marketing · E-commerce · Content Systems", icon: BarChart3 },
+    { name: "Automation", tools: "n8n · Custom APIs · Autonomous Agents", icon: Bot },
   ]
 
-  const logEntries = [
+  const logEntries = lang === "pt" ? [
     { date: "2026.02", text: "Novo pipeline de decisão autônoma em produção na PAI. 3 clientes migrados.", tag: "infra" },
     { date: "2026.01", text: "Fechamento de 2 novos investimentos no fundo. Tese: infraestrutura > produto.", tag: "venture" },
     { date: "2025.12", text: "Substrato v3 — este site — projetado e construído como sistema, não como página.", tag: "meta" },
     { date: "2025.11", text: "DryOn atingiu operação autônoma. Zero intervenção manual no funil.", tag: "escala" },
+  ] : [
+    { date: "2026.02", text: "New autonomous decision pipeline in production at PAI. 3 clients migrated.", tag: "infra" },
+    { date: "2026.01", text: "Closed 2 new fund investments. Thesis: infrastructure > product.", tag: "venture" },
+    { date: "2025.12", text: "Substrate v3 — this site — designed and built as system, not as a page.", tag: "meta" },
+    { date: "2025.11", text: "DryOn reached autonomous operation. Zero manual funnel intervention.", tag: "scale" },
   ]
 
   const investData = [
@@ -847,12 +888,78 @@ export default function SubstratoPage() {
     { label: lang === "pt" ? "Network" : "Network", value: lang === "pt" ? "CEOs de exits bilionários · Fundos · Gateways de pagamento" : "Billion-exit CEOs · Funds · Payment gateways" },
   ]
 
-  const signals = [
-    { text: "Automação sem arquitetura é apenas velocidade aplicada ao caos.", tag: "automação" },
-    { text: "Uma marca não é identidade visual. É a decisão estrutural mais importante do negócio.", tag: "branding" },
-    { text: "IA não substitui pessoas. Substitui os processos que impedem pessoas de pensar.", tag: "IA" },
-    { text: "Escala não é crescer. É construir algo que cresce sem precisar de você.", tag: "escala" },
-    { text: "A diferença entre produto e sistema: o sistema funciona quando você para.", tag: "sistemas" },
+  const principles = lang === "pt" ? [
+    {
+      number: "01",
+      title: "Sistema > Produto",
+      thesis: "A diferença entre produto e sistema: o sistema funciona quando você para.",
+      detail: "Produtos resolvem problemas pontuais. Sistemas resolvem classes inteiras de problemas. Quando projeto algo, pergunto: isso vai funcionar sem mim daqui a 6 meses? Se não, é produto. Se sim, é infraestrutura.",
+      tag: "arquitetura",
+    },
+    {
+      number: "02",
+      title: "Automação ≠ Velocidade",
+      thesis: "Automação sem arquitetura é apenas velocidade aplicada ao caos.",
+      detail: "Antes de automatizar, é preciso entender a lógica de decisão por trás. 90% das empresas automatizam processos quebrados — e ficam surpresas quando escala só amplifica os problemas. Primeiro arquitetura, depois automação.",
+      tag: "automação",
+    },
+    {
+      number: "03",
+      title: "Marca como Decisão Estrutural",
+      thesis: "Uma marca não é identidade visual. É a decisão estrutural mais importante do negócio.",
+      detail: "A marca define como o mercado te percebe, qual tipo de cliente você atrai, e qual preço pode cobrar. Isso não é design — é arquitetura de posicionamento. Uma marca mal construída limita tudo que vem depois.",
+      tag: "branding",
+    },
+    {
+      number: "04",
+      title: "IA como Camada de Decisão",
+      thesis: "IA não substitui pessoas. Substitui os processos que impedem pessoas de pensar.",
+      detail: "Na PAI, usamos IA para eliminar as 85% de decisões operacionais repetitivas. O resultado: fundadores param de apagar incêndio e começam a arquitetar o futuro. A IA libera o recurso mais escasso — atenção humana de qualidade.",
+      tag: "inteligência artificial",
+    },
+    {
+      number: "05",
+      title: "Escala por Subtração",
+      thesis: "Escala não é crescer. É construir algo que cresce sem precisar de você.",
+      detail: "A maioria tenta escalar adicionando — mais gente, mais features, mais processos. Escala real vem de subtrair: eliminar dependências, simplificar decisões, criar loops que se retroalimentam. Menos peças, mais sistema.",
+      tag: "escala",
+    },
+  ] : [
+    {
+      number: "01",
+      title: "System > Product",
+      thesis: "The difference between product and system: the system works when you stop.",
+      detail: "Products solve specific problems. Systems solve entire classes of problems. When I design something, I ask: will this work without me in 6 months? If not, it's a product. If yes, it's infrastructure.",
+      tag: "architecture",
+    },
+    {
+      number: "02",
+      title: "Automation ≠ Speed",
+      thesis: "Automation without architecture is just speed applied to chaos.",
+      detail: "Before automating, you need to understand the decision logic behind it. 90% of companies automate broken processes — then wonder why scaling only amplifies problems. Architecture first, automation second.",
+      tag: "automation",
+    },
+    {
+      number: "03",
+      title: "Brand as Structural Decision",
+      thesis: "A brand isn't visual identity. It's the most important structural decision in a business.",
+      detail: "Brand defines market perception, customer type, and pricing power. That's not design — it's positioning architecture. A poorly built brand limits everything that comes after.",
+      tag: "branding",
+    },
+    {
+      number: "04",
+      title: "AI as Decision Layer",
+      thesis: "AI doesn't replace people. It replaces the processes that prevent people from thinking.",
+      detail: "At PAI, we use AI to eliminate the 85% of repetitive operational decisions. The result: founders stop firefighting and start architecting the future. AI frees the scarcest resource — quality human attention.",
+      tag: "artificial intelligence",
+    },
+    {
+      number: "05",
+      title: "Scale by Subtraction",
+      thesis: "Scale isn't growing. It's building something that grows without needing you.",
+      detail: "Most try to scale by adding — more people, more features, more processes. Real scale comes from subtracting: eliminating dependencies, simplifying decisions, creating self-reinforcing loops. Fewer parts, more system.",
+      tag: "scale",
+    },
   ]
 
   const stats = [
@@ -949,7 +1056,7 @@ export default function SubstratoPage() {
       </motion.section>
 
       {/* ═══ PROOF TICKER ═══ */}
-      <ProofTicker />
+      <ProofTicker lang={lang} />
 
       {/* ═══ 00 TESE ═══ */}
       <section id="s-0" className="relative py-32 sm:py-40 px-6">
@@ -1283,26 +1390,44 @@ export default function SubstratoPage() {
         </div>
       </section>
 
-      {/* ═══ 05 SINAL + LOG ═══ */}
+      {/* ═══ 05 PRINCÍPIOS OPERACIONAIS ═══ */}
       <section id="s-5" className="relative py-32 sm:py-40 px-6 grid-bg">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <Reveal>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-px bg-gradient-to-r from-white/15 to-transparent" />
               <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">05 — {tx.sinal}</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-16 text-white/90">{tx.sinalTitle}</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-4 text-white/90">{tx.sinalTitle}</h2>
+            <p className="text-sm text-white/35 max-w-lg mb-16 leading-relaxed">{tx.sinalSub}</p>
           </Reveal>
 
-          <div className="space-y-14 mb-24">
-            {signals.map((q, i) => (
-              <Reveal key={i} delay={i * 0.06}>
-                <div className="flex items-start gap-6 sm:gap-8 group">
-                  <span className="font-mono text-[10px] text-white/15 mt-2 shrink-0">{String(i + 1).padStart(2, "0")}</span>
-                  <div className="relative">
-                    <div className="absolute -left-4 top-0 w-px h-full bg-gradient-to-b from-white/20 via-white/5 to-transparent" />
-                    <p className="text-lg sm:text-xl md:text-2xl font-light text-white/50 group-hover:text-white/75 transition-colors duration-700 leading-relaxed mb-2">{q.text}</p>
-                    <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/20">{q.tag}</span>
+          {/* Principles grid */}
+          <div className="space-y-6 mb-24">
+            {principles.map((p, i) => (
+              <Reveal key={i} delay={i * 0.08}>
+                <div className="border-gradient border-gradient-hover rounded-lg group transition-all duration-500 overflow-hidden">
+                  <div className="p-6 sm:p-8">
+                    {/* Header */}
+                    <div className="flex items-start gap-4 sm:gap-6 mb-5">
+                      <span className="font-mono text-[11px] text-white/15 mt-1 shrink-0 tabular-nums">{p.number}</span>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-3">
+                          <h3 className="text-base sm:text-lg font-light text-white/85 tracking-tight">{p.title}</h3>
+                          <span className="font-mono text-[8px] uppercase tracking-widest text-white/20 border border-white/[0.08] rounded-full px-2.5 py-0.5 hidden sm:inline">{p.tag}</span>
+                        </div>
+                        {/* Thesis — the principle itself */}
+                        <p className="text-lg sm:text-xl font-light text-white/50 group-hover:text-white/70 leading-relaxed transition-colors duration-500 mb-4">
+                          &ldquo;{p.thesis}&rdquo;
+                        </p>
+                        {/* Detail — didactic explanation */}
+                        <div className="relative pl-4 border-l border-white/[0.06]">
+                          <p className="text-sm text-white/30 group-hover:text-white/40 leading-[1.8] transition-colors duration-500">
+                            {p.detail}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Reveal>
@@ -1311,16 +1436,16 @@ export default function SubstratoPage() {
 
           {/* System log */}
           <Reveal>
-            <div className="border-gradient rounded-lg p-8">
+            <div className="border-gradient rounded-lg p-6 sm:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <Terminal className="w-4 h-4 text-white/20" />
                 <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">{tx.logTitle}</span>
               </div>
-              <p className="text-xs text-white/15 mb-6">{tx.logSub}</p>
+              <p className="text-xs text-white/20 mb-6">{tx.logSub}</p>
               <div className="space-y-4">
                 {logEntries.map((entry, i) => (
                   <div key={i} className="flex items-start gap-4 group">
-                    <span className="font-mono text-[10px] text-white/20 mt-0.5 shrink-0">{entry.date}</span>
+                    <span className="font-mono text-[10px] text-white/20 mt-0.5 shrink-0 tabular-nums">{entry.date}</span>
                     <div className="flex-1">
                       <p className="text-sm text-white/40 group-hover:text-white/60 transition-colors leading-relaxed">{entry.text}</p>
                     </div>
