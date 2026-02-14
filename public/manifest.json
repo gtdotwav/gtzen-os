@@ -1,0 +1,21 @@
+{
+  "name": "GTZEN — Substrato",
+  "short_name": "Substrato",
+  "description": "Sistemas que constroem sistemas. A infraestrutura invisível por trás de marcas, produtos e decisões que escalam.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/brand/substrato-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/brand/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+}

@@ -115,6 +115,7 @@ interface CallModeProps {
     callEnd: string
   }
   onTranscript: (role: "oracle" | "user", text: string) => void
+  autoGreeting?: boolean
 }
 
 // Runtime-import ElevenLabs — bundled as a separate async chunk
@@ -128,7 +129,7 @@ async function loadElevenLabs(): Promise<{ Conversation: any } | null> {
   }
 }
 
-export default function CallMode({ agentId, lang, tx, onTranscript }: CallModeProps) {
+export default function CallMode({ agentId, lang, tx, onTranscript, autoGreeting = true }: CallModeProps) {
   const [status, setStatus] = useState<"idle" | "connecting" | "connected" | "error">("idle")
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [sdkAvailable, setSdkAvailable] = useState<boolean | null>(null)
@@ -182,14 +183,33 @@ export default function CallMode({ agentId, lang, tx, onTranscript }: CallModePr
         throw new Error("SDK_UNAVAILABLE")
       }
 
-      const conversation = await mod.Conversation.startSession({
+      // Auto-greeting: the agent speaks first when the call connects
+      const greetingPt = "Olá, sou o Substrato — a camada de inteligência por trás de tudo que o Geander constrói. Direto ao que interessa: me conte o que você está pensando em construir, e eu te mostro se existe uma arquitetura por trás disso. Pode falar."
+      const greetingEn = "Hi, I'm the Substrate — the intelligence layer behind everything Geander builds. Let's get straight to it: tell me what you're thinking of building, and I'll show you if there's an architecture behind it. Go ahead."
+
+      const sessionConfig: Record<string, any> = {
         agentId,
         connectionType: "webrtc",
+      }
+
+      // Add firstMessage for auto-greeting if supported
+      if (autoGreeting) {
+        sessionConfig.overrides = {
+          agent: {
+            firstMessage: lang === "pt" ? greetingPt : greetingEn,
+          },
+        }
+      }
+
+      const conversation = await mod.Conversation.startSession({
+        ...sessionConfig,
         onConnect: () => {
           setStatus("connected")
-          onTranscript("oracle", lang === "pt"
-            ? "Conectado. Estou ouvindo — fale naturalmente sobre o que te trouxe aqui."
-            : "Connected. I'm listening — speak naturally about what brought you here."
+          onTranscript("oracle", autoGreeting
+            ? (lang === "pt" ? greetingPt : greetingEn)
+            : (lang === "pt"
+              ? "Conectado. Estou ouvindo — fale naturalmente sobre o que te trouxe aqui."
+              : "Connected. I'm listening — speak naturally about what brought you here.")
           )
         },
         onDisconnect: () => {
@@ -308,9 +328,9 @@ export default function CallMode({ agentId, lang, tx, onTranscript }: CallModePr
   }
 
   return (
-    <div className="flex flex-col items-center gap-5 py-6">
+    <div className="flex flex-col items-center gap-5 py-6 px-4">
       {/* Visualizer */}
-      <div className="w-full max-w-xs">
+      <div className="w-full max-w-xs sm:max-w-sm">
         <VoiceVisualizer
           active={isConnected}
           bars={48}

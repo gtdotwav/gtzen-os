@@ -59,14 +59,14 @@ const t = {
     headline3: "Eu construo a",
     headline4: "infraestrutura",
     headline5: "por trás deles.",
-    sub: "22 anos. Poliglota. CEO da PAI (Partners in A.I). Sócio de fundos com 10+ empresas em portfólio. Construo sistemas que pensam, marcas que escalam, e infraestrutura que dura.",
+    sub: "22 anos. Poliglota. CEO da PAI (Partners in A.I). Sócio de fundos com 10+ empresas. Investidor em gateways de pagamento e Shield Tech. Network com CEOs de exits bilionários. Construo sistemas que pensam, marcas que escalam, e infraestrutura que dura.",
     scroll: "descer para entrar",
     terminalHint: "Pressione Ctrl+K para abrir o terminal",
     tese: "Tese",
     teseTitle1: "A maioria constrói features.",
     teseTitle2: "Eu construo as condições",
     teseTitle3: "para que features tenham razão de existir.",
-    teseBody: "Aos 22, já morei nos EUA estudando, construí a PAI — uma empresa de inteligência artificial aplicada —, opero como sócio de fundos de investimento com mais de 10 empresas em portfólio, e falo múltiplos idiomas. Não sou designer. Não sou desenvolvedor. Não sou marqueteiro. Sou a camada que conecta tudo isso — o substrato. A infraestrutura de pensamento que transforma ambiguidade em arquitetura, e arquitetura em sistemas que operam sozinhos.",
+    teseBody: "Aos 22, já morei nos EUA estudando, construí a PAI — uma empresa de inteligência artificial aplicada —, opero como sócio de fundos de investimento com mais de 10 empresas em portfólio, sou investidor em gateways de pagamento e na Shield Tech, e mantenho networking com CEOs que consolidaram e venderam empresas por valores acima de R$ 1 bilhão. Falo múltiplos idiomas. Conheço todas as áreas necessárias para consolidar uma estrutura 360°. Não sou designer. Não sou desenvolvedor. Não sou marqueteiro. Sou a camada que conecta tudo isso — o substrato.",
     teseQuote: "O substrato não aparece no produto final. Mas sem ele, o produto não existe.",
     framework: "Como Penso",
     frameworkTitle: "O framework",
@@ -117,14 +117,14 @@ const t = {
     headline3: "I build the",
     headline4: "infrastructure",
     headline5: "behind them.",
-    sub: "22 years old. Polyglot. CEO of PAI (Partners in A.I). Fund partner with 10+ portfolio companies. I build systems that think, brands that scale, and infrastructure that lasts.",
+    sub: "22 years old. Polyglot. CEO of PAI (Partners in A.I). Fund partner with 10+ companies. Payment gateway investor & Shield Tech partner. Network with billion-dollar exit CEOs. I build systems that think, brands that scale, and infrastructure that lasts.",
     scroll: "scroll to enter",
     terminalHint: "Press Ctrl+K to open terminal",
     tese: "Thesis",
     teseTitle1: "Most people build features.",
     teseTitle2: "I build the conditions",
     teseTitle3: "for features to have a reason to exist.",
-    teseBody: "At 22, I've lived in the US studying, built PAI — an applied artificial intelligence company —, operate as a fund partner with 10+ portfolio companies, and speak multiple languages. I'm not a designer. Not a developer. Not a marketer. I'm the layer that connects all of it — the substrate. The thinking infrastructure that turns ambiguity into architecture, and architecture into self-operating systems.",
+    teseBody: "At 22, I've lived in the US studying, built PAI — an applied artificial intelligence company —, operate as a fund partner with 10+ portfolio companies, invest in payment gateways and Shield Tech, and maintain a network with CEOs who've built and sold companies for over R$ 1 billion. I speak multiple languages and understand every layer needed to consolidate a 360° structure. I'm not a designer. Not a developer. Not a marketer. I'm the layer that connects all of it — the substrate.",
     teseQuote: "The substrate doesn't show in the final product. But without it, the product doesn't exist.",
     framework: "How I Think",
     frameworkTitle: "The framework",
@@ -235,7 +235,7 @@ function TerminalOverlay({ isOpen, onClose, lang }: { isOpen: boolean; onClose: 
 
   const commands: Record<string, string> = {
     help: "Available: about, skills, projects, stack, contact, philosophy, clear",
-    about: "Geander · 22 · Polyglot (PT/EN/ES) · Lived in the US · CEO & Founder of PAI (Partners in A.I) · Fund partner with 10+ portfolio companies · Systems thinker · Builder",
+    about: "Geander · 22 · Polyglot (PT/EN/ES) · Lived in the US · CEO & Founder of PAI (Partners in A.I) · Fund partner with 10+ portfolio companies · Shield Tech investor · Payment gateway partnerships · Network with CEOs of billion-dollar exits · Systems thinker · Builder",
     skills: "Branding Strategy · Applied AI · E-commerce & Performance · Product Architecture · Automation & Prompt Engineering · Digital Ecosystems · Business Strategy",
     projects: "001 DryOn → Full brand system (branding + ecommerce + narrative)\n002 PAI → Partners in A.I — applied AI infrastructure company\n003 Investment Fund → 10+ companies in portfolio, active board roles\n004 Digital Assets → Self-operating portfolio of scalable products",
     stack: "DECISION: First principles + Systems thinking\nCREATION: AI pipelines + Prompt architecture\nDISTRIBUTION: Performance marketing + E-commerce\nAUTOMATION: n8n + Custom LLM chains + API orchestration",
@@ -331,25 +331,53 @@ function ScrollProgress() {
 }
 
 /* ═══════════════════════════════════════
-   SECTION NAV
+   SECTION NAV (Desktop: right sidebar | Mobile: bottom bar)
    ═══════════════════════════════════════ */
 function SectionNav({ active, sections }: { active: number; sections: string[] }) {
   return (
-    <motion.nav
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 3, duration: 1 }}
-      className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-end gap-3"
-    >
-      {sections.map((s, i) => (
-        <a key={s} href={`#s-${i}`} className="flex items-center gap-2 group">
-          <span className={`font-mono text-[9px] uppercase tracking-[0.2em] transition-all duration-500 ${active === i ? "text-white/50" : "text-transparent group-hover:text-white/30"}`}>
-            {s}
-          </span>
-          <div className={`transition-all duration-500 rounded-full ${active === i ? "w-6 h-px bg-white/50" : "w-3 h-px bg-white/15 group-hover:w-5 group-hover:bg-white/30"}`} />
-        </a>
-      ))}
-    </motion.nav>
+    <>
+      {/* Desktop nav — right sidebar */}
+      <motion.nav
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 3, duration: 1 }}
+        className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-end gap-3"
+      >
+        {sections.map((s, i) => (
+          <a key={s} href={`#s-${i}`} className="flex items-center gap-2 group">
+            <span className={`font-mono text-[9px] uppercase tracking-[0.2em] transition-all duration-500 ${active === i ? "text-white/50" : "text-transparent group-hover:text-white/30"}`}>
+              {s}
+            </span>
+            <div className={`transition-all duration-500 rounded-full ${active === i ? "w-6 h-px bg-white/50" : "w-3 h-px bg-white/15 group-hover:w-5 group-hover:bg-white/30"}`} />
+          </a>
+        ))}
+      </motion.nav>
+
+      {/* Mobile nav — bottom bar */}
+      <motion.nav
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 3, duration: 1 }}
+        className="fixed bottom-0 left-0 right-0 z-40 xl:hidden mobile-nav border-t border-white/[0.06]"
+      >
+        <div className="flex items-center justify-around px-2 py-2">
+          {sections.map((s, i) => (
+            <a
+              key={s}
+              href={`#s-${i}`}
+              className={`mobile-nav-item flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg transition-all duration-300 ${
+                active === i ? "bg-white/[0.06]" : ""
+              }`}
+            >
+              <div className={`w-1 h-1 rounded-full transition-all duration-500 ${active === i ? "bg-white/60" : "bg-white/12"}`} />
+              <span className={`font-mono text-[7px] uppercase tracking-wider transition-all duration-500 ${active === i ? "text-white/50" : "text-white/15"}`}>
+                {s.slice(0, 4)}
+              </span>
+            </a>
+          ))}
+        </div>
+      </motion.nav>
+    </>
   )
 }
 
@@ -412,14 +440,16 @@ function TypingTerminal() {
    ═══════════════════════════════════════ */
 function ProofTicker() {
   const items = [
-    "DryOn → sistema de marca completo",
+    "DryOn → HEAD de IA & Growth · sistema de marca completo",
     "PAI (Partners in A.I) → CEO & Founder",
     "Fundo de Investimento → 10+ empresas em portfólio",
+    "Shield Tech → investidor · inovação em pagamentos · Rio/Brasil",
+    "Sócio de CEOs → exits acima de R$ 1BI",
     "Infraestrutura IA → 85% decisões automatizadas",
     "Ativos Digitais → portfólio escalável em produção",
     "4 idiomas · Vivência internacional · EUA",
-    "Prompt Architecture → 7 pipelines autônomos",
-    "E-commerce → sistemas de conversão engenhados",
+    "Gateways de Pagamento → parceria estratégica",
+    "Estrutura 360° → conhecimento completo de todas as áreas",
   ]
   const doubled = [...items, ...items]
 
@@ -546,6 +576,119 @@ function CaseStudy({ number, title, thesis, layers, result, insight, metrics, in
 }
 
 /* ═══════════════════════════════════════
+   CHAIN FLOW — Interactive Model Pipeline
+   ═══════════════════════════════════════ */
+function ChainFlow({ title, subtitle, color, steps }: {
+  title: string
+  subtitle: string
+  color: "amber" | "blue" | "green"
+  steps: { label: string; desc: string; icon: React.ComponentType<{ className?: string }> }[]
+}) {
+  const [activeStep, setActiveStep] = useState<number | null>(null)
+  const [expanded, setExpanded] = useState(false)
+
+  const colorMap = {
+    amber: { dot: "bg-amber-500/60", border: "border-amber-500/20", text: "text-amber-400/60", bg: "bg-amber-500/5", line: "from-amber-500/30 to-amber-500/5" },
+    blue: { dot: "bg-blue-500/60", border: "border-blue-500/20", text: "text-blue-400/60", bg: "bg-blue-500/5", line: "from-blue-500/30 to-blue-500/5" },
+    green: { dot: "bg-green-500/60", border: "border-green-500/20", text: "text-green-400/60", bg: "bg-green-500/5", line: "from-green-500/30 to-green-500/5" },
+  }
+  const c = colorMap[color]
+
+  return (
+    <div className="mb-8">
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className={`w-full text-left border-gradient border-gradient-hover rounded-lg p-5 sm:p-6 transition-all duration-500 ${expanded ? "bg-white/[0.01]" : ""}`}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className={`w-2 h-2 rounded-full ${c.dot}`} />
+            <span className="text-sm sm:text-base font-light text-white/80">{title}</span>
+            <span className="font-mono text-[9px] text-white/15 uppercase tracking-wider hidden sm:inline">{subtitle}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-[9px] text-white/15">{steps.length} {steps.length === 1 ? "step" : "steps"}</span>
+            <motion.div animate={{ rotate: expanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+              <ChevronDown className="w-4 h-4 text-white/20" />
+            </motion.div>
+          </div>
+        </div>
+      </button>
+
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="pt-4 pb-2 px-2">
+              {/* Pipeline visual */}
+              <div className="relative">
+                {/* Connection line */}
+                <div className={`absolute left-5 sm:left-6 top-0 bottom-0 w-px bg-gradient-to-b ${c.line}`} />
+
+                {steps.map((step, i) => {
+                  const Icon = step.icon
+                  const isActive = activeStep === i
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.08, duration: 0.4 }}
+                      className="relative flex items-start gap-4 sm:gap-5 mb-6 last:mb-0 cursor-pointer group"
+                      onClick={() => setActiveStep(isActive ? null : i)}
+                      onMouseEnter={() => setActiveStep(i)}
+                      onMouseLeave={() => setActiveStep(null)}
+                    >
+                      {/* Node */}
+                      <div className={`relative z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center shrink-0 transition-all duration-500 ${isActive ? `${c.bg} ${c.border} border` : "bg-white/[0.03] border border-white/[0.06]"}`}>
+                        <Icon className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-500 ${isActive ? c.text : "text-white/25"}`} />
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 pt-1">
+                        <div className="flex items-baseline gap-3 mb-1">
+                          <span className="font-mono text-[9px] text-white/12 uppercase tracking-wider">0{i + 1}</span>
+                          <h4 className={`text-sm font-mono transition-colors duration-500 ${isActive ? "text-white/80" : "text-white/50"}`}>{step.label}</h4>
+                        </div>
+                        <AnimatePresence>
+                          {isActive && (
+                            <motion.p
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="text-xs text-white/30 leading-relaxed"
+                            >
+                              {step.desc}
+                            </motion.p>
+                          )}
+                        </AnimatePresence>
+                      </div>
+
+                      {/* Arrow connector */}
+                      {i < steps.length - 1 && (
+                        <div className="hidden sm:block absolute left-5 sm:left-6 top-10 sm:top-12 transform -translate-x-[0.5px]">
+                          <div className={`w-px h-4 ${isActive ? c.line.replace("from-", "bg-").split(" ")[0] : "bg-white/[0.06]"}`} />
+                        </div>
+                      )}
+                    </motion.div>
+                  )
+                })}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════
    MAIN PAGE — SUBSTRATO v3
    ═══════════════════════════════════════ */
 export default function SubstratoPage() {
@@ -555,6 +698,7 @@ export default function SubstratoPage() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0])
   const heroScale = useTransform(scrollYProgress, [0, 0.1], [1, 0.96])
   const heroBlur = useTransform(scrollYProgress, [0, 0.1], [0, 10])
+  const heroFilter = useTransform(heroBlur, (v: number) => `blur(${v}px)`)
   const [activeLayer, setActiveLayer] = useState(0)
   const [activeSection, setActiveSection] = useState(0)
   const [terminalOpen, setTerminalOpen] = useState(false)
@@ -619,7 +763,7 @@ export default function SubstratoPage() {
   const cases = [
     { number: "001", title: "DryOn", thesis: "Uma marca de secadores não é sobre secadores. É sobre a narrativa de cuidado e identidade que o produto carrega. Construí a DryOn como um sistema de marca completo.", layers: ["branding", "e-commerce", "narrativa", "performance"], result: "Marca operando como ecossistema", insight: "Tratar o produto como veículo de identidade, não commodity. Cada decisão de branding alimentava a performance — um loop, não sequência.", metrics: [{ label: "Camadas", value: "4" }, { label: "Tempo", value: "90d" }, { label: "Modelo", value: "Sistema" }] },
     { number: "002", title: "PAI — Partners in A.I", thesis: "Fundei a PAI para resolver um gap: empresas querem IA mas não têm infraestrutura de pensamento para usá-la. Não vendemos ferramentas — vendemos a camada de inteligência que falta.", layers: ["IA aplicada", "consultoria", "automação", "estratégia"], result: "Empresa ativa com clientes em operação", insight: "O mercado não precisa de mais ferramentas de IA. Precisa de quem entenda a arquitetura de decisão por trás. A PAI é essa camada.", metrics: [{ label: "Pipelines ativos", value: "7+" }, { label: "Decisões automatizadas", value: "85%" }, { label: "Tempo economizado", value: "12h/sem" }] },
-    { number: "003", title: "Portfólio de Investimentos", thesis: "Como sócio de fundos, avalio empresas pela mesma lente: a qualidade da infraestrutura, não do produto. Sistemas escaláveis > features bonitas.", layers: ["venture", "diligência", "escala", "governança"], result: "10+ empresas em portfólio ativo", insight: "A tese é simples: investir em fundadores que pensam em sistemas, não em funcionalidades. O produto muda. O sistema permanece.", metrics: [{ label: "Empresas", value: "10+" }, { label: "Tese", value: "Sistemas" }, { label: "Papel", value: "Ativo" }] },
+    { number: "003", title: "Portfólio de Investimentos", thesis: "Sócio de fundos e investidor com parceria em gateways de pagamento — incluindo a Shield Tech, inovadores em tecnologia no Rio com networking nacional. Sócio de CEOs que venderam empresas por valores acima de R$ 1BI. Avalio tudo pela qualidade da infraestrutura, não do produto.", layers: ["venture", "gateways", "diligência", "escala", "governança 360°"], result: "10+ empresas em portfólio ativo · Parcerias com exits bilionários", insight: "A tese é simples: investir em fundadores que pensam em sistemas, não em funcionalidades. O produto muda. O sistema permanece. Com acesso a operadores que já consolidaram estruturas 360° em escala bilionária, o deal flow é outro nível.", metrics: [{ label: "Empresas", value: "10+" }, { label: "Parcerias", value: "Shield Tech · Gateways" }, { label: "Network", value: "Exits >R$1BI" }, { label: "Papel", value: "Ativo · 360°" }] },
     { number: "004", title: "Ativos Digitais", thesis: "Cada conteúdo e sistema que crio é projetado como ativo — gera valor composto ao longo do tempo, não apenas no momento da publicação.", layers: ["produtos digitais", "escala", "IP", "distribuição"], result: "Portfólio que escala sem operação", insight: "Não pergunto 'o que publicar hoje?' — pergunto 'o que vai gerar retorno em 6 meses?'. Isso muda a arquitetura de tudo.", metrics: [{ label: "Ativos", value: "12+" }, { label: "Recorrência", value: "Sim" }, { label: "Operação", value: "~0" }] },
   ]
 
@@ -653,10 +797,11 @@ export default function SubstratoPage() {
   ]
 
   const investData = [
-    { label: lang === "pt" ? "Risco" : "Risk", value: lang === "pt" ? "Baixo — track record demonstrável" : "Low — demonstrable track record" },
-    { label: lang === "pt" ? "Retorno esperado" : "Expected return", value: lang === "pt" ? "Sistemas que operam sozinhos após setup" : "Systems that self-operate after setup" },
-    { label: lang === "pt" ? "Diferencial" : "Edge", value: lang === "pt" ? "Pensa em sistemas, não em tarefas" : "Thinks in systems, not tasks" },
+    { label: lang === "pt" ? "Risco" : "Risk", value: lang === "pt" ? "Baixo — track record + sócios com exits >R$1BI" : "Low — track record + partners with >R$1BI exits" },
+    { label: lang === "pt" ? "Retorno esperado" : "Expected return", value: lang === "pt" ? "Sistemas auto-operantes + infraestrutura de escala" : "Self-operating systems + scale infrastructure" },
+    { label: lang === "pt" ? "Diferencial" : "Edge", value: lang === "pt" ? "Visão 360° · Shield Tech · Gateways · Network nacional" : "360° vision · Shield Tech · Gateways · Nationwide network" },
     { label: lang === "pt" ? "Horizonte" : "Horizon", value: lang === "pt" ? "Longo prazo — infraestrutura > quick wins" : "Long term — infrastructure > quick wins" },
+    { label: lang === "pt" ? "Network" : "Network", value: lang === "pt" ? "CEOs de exits bilionários · Fundos · Gateways de pagamento" : "Billion-exit CEOs · Funds · Payment gateways" },
   ]
 
   const signals = [
@@ -702,7 +847,7 @@ export default function SubstratoPage() {
 
       {/* ═══ HERO ═══ */}
       <motion.section
-        style={{ opacity: heroOpacity, scale: heroScale, filter: useTransform(heroBlur, (v) => `blur(${v}px)`) }}
+        style={{ opacity: heroOpacity, scale: heroScale, filter: heroFilter }}
         className="relative h-screen flex flex-col items-center justify-center overflow-hidden"
       >
         <ShaderBackground />
@@ -907,9 +1052,9 @@ export default function SubstratoPage() {
         </div>
       </section>
 
-      {/* ═══ 03 PROVAS ═══ */}
+      {/* ═══ 03 PROVAS + CADEIA DE MODELOS ═══ */}
       <section id="s-3" className="relative py-32 sm:py-40 px-6 grid-bg">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <Reveal>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-px bg-gradient-to-r from-white/15 to-transparent" />
@@ -920,13 +1065,76 @@ export default function SubstratoPage() {
             </h2>
             <p className="text-sm text-white/25 max-w-lg mb-16 leading-relaxed">{tx.provasSub}</p>
           </Reveal>
-          <div className="space-y-4">
-            {cases.map((c, i) => <CaseStudy key={c.number} {...c} index={i} />)}
+
+          {/* ═══ CADEIA DE MODELOS — Interactive Visual Chains ═══ */}
+          <div className="space-y-6 mb-16">
+            {cases.map((c, i) => (
+              <CaseStudy key={c.number} {...c} index={i} />
+            ))}
           </div>
+
+          {/* ═══ CADEIA VISUAL — Work Model Pipeline ═══ */}
+          <Reveal delay={0.15}>
+            <div className="mb-16">
+              <div className="flex items-center gap-3 mb-8">
+                <Network className="w-4 h-4 text-white/20" />
+                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">
+                  {lang === "pt" ? "Cadeia de Modelos" : "Model Chain"}
+                </span>
+              </div>
+              <p className="text-sm text-white/25 max-w-lg mb-10 leading-relaxed">
+                {lang === "pt"
+                  ? "Cada projeto segue uma cadeia. Não é linear — é uma rede de decisões que se alimentam. Clique para explorar cada etapa."
+                  : "Each project follows a chain. Not linear — a network of decisions that feed each other. Click to explore each step."}
+              </p>
+
+              {/* Chain 1: Brand System */}
+              <ChainFlow
+                title={lang === "pt" ? "Cadeia: Sistema de Marca" : "Chain: Brand System"}
+                subtitle="DryOn · PAI"
+                color="amber"
+                steps={[
+                  { label: lang === "pt" ? "Diagnóstico" : "Diagnosis", desc: lang === "pt" ? "Mapear mercado, gaps, e posicionamento vazio" : "Map market, gaps, and empty positioning", icon: Search },
+                  { label: lang === "pt" ? "Arquitetura" : "Architecture", desc: lang === "pt" ? "Definir DNA, narrativa, sistema visual, tom" : "Define DNA, narrative, visual system, tone", icon: Layers },
+                  { label: lang === "pt" ? "Execução" : "Execution", desc: lang === "pt" ? "Site, conteúdo, funil, e-commerce" : "Site, content, funnel, e-commerce", icon: Rocket },
+                  { label: lang === "pt" ? "Automação" : "Automation", desc: lang === "pt" ? "Pipelines IA para conteúdo e decisão" : "AI pipelines for content and decisions", icon: Bot },
+                  { label: lang === "pt" ? "Escala" : "Scale", desc: lang === "pt" ? "Sistema auto-operante. Crescimento composto" : "Self-operating system. Compound growth", icon: TrendingUp },
+                ]}
+              />
+
+              {/* Chain 2: AI Infrastructure */}
+              <ChainFlow
+                title={lang === "pt" ? "Cadeia: Infraestrutura IA" : "Chain: AI Infrastructure"}
+                subtitle="PAI · Portfólio"
+                color="blue"
+                steps={[
+                  { label: lang === "pt" ? "Auditoria" : "Audit", desc: lang === "pt" ? "Mapear processos repetitivos e decisões manuais" : "Map repetitive processes and manual decisions", icon: Search },
+                  { label: lang === "pt" ? "Design" : "Design", desc: lang === "pt" ? "Arquitetar pipelines de decisão com LLMs" : "Architect decision pipelines with LLMs", icon: Brain },
+                  { label: lang === "pt" ? "Deploy" : "Deploy", desc: lang === "pt" ? "n8n, APIs, agents autônomos em produção" : "n8n, APIs, autonomous agents in production", icon: Code },
+                  { label: lang === "pt" ? "Feedback" : "Feedback", desc: lang === "pt" ? "Loops de aprendizado. O sistema melhora sozinho" : "Learning loops. The system improves itself", icon: Network },
+                  { label: lang === "pt" ? "Escala" : "Scale", desc: lang === "pt" ? "85% das decisões automatizadas. 12h/sem economizadas" : "85% decisions automated. 12h/week saved", icon: Zap },
+                ]}
+              />
+
+              {/* Chain 3: Growth & Investment */}
+              <ChainFlow
+                title={lang === "pt" ? "Cadeia: Growth & Investimento" : "Chain: Growth & Investment"}
+                subtitle="Fundo · Shield Tech · Gateways"
+                color="green"
+                steps={[
+                  { label: lang === "pt" ? "Tese" : "Thesis", desc: lang === "pt" ? "Infraestrutura > features. Sistemas > produtos. Parceria com gateways de pagamento e investidor da Shield Tech" : "Infrastructure > features. Systems > products. Payment gateway partnerships & Shield Tech investor", icon: Brain },
+                  { label: lang === "pt" ? "Diligência" : "Diligence", desc: lang === "pt" ? "Avaliar fundadores pela qualidade do sistema. Sócio de CEOs com exits acima de R$ 1BI" : "Evaluate founders by system quality. Partner of CEOs with exits above R$ 1BI", icon: Shield },
+                  { label: lang === "pt" ? "Alocação" : "Allocation", desc: lang === "pt" ? "Capital + infraestrutura de IA + networking nacional como valor agregado" : "Capital + AI infrastructure + nationwide networking as added value", icon: Target },
+                  { label: lang === "pt" ? "Operação" : "Operation", desc: lang === "pt" ? "Board ativo. Estrutura 360°. Decisões de arquitetura com visão completa do negócio" : "Active board. 360° structure. Architecture decisions with full business vision", icon: Layers },
+                  { label: lang === "pt" ? "Retorno" : "Return", desc: lang === "pt" ? "10+ empresas. Portfólio escalável. Network com operadores de exits bilionários" : "10+ companies. Scalable portfolio. Network with billion-dollar exit operators", icon: TrendingUp },
+                ]}
+              />
+            </div>
+          </Reveal>
 
           {/* Anti-portfolio */}
           <Reveal delay={0.2}>
-            <div className="mt-20 border-gradient rounded-lg p-8">
+            <div className="mt-12 border-gradient rounded-lg p-6 sm:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <Shield className="w-4 h-4 text-white/20" />
                 <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">{tx.antiTitle}</span>
@@ -1103,7 +1311,7 @@ export default function SubstratoPage() {
       />
 
       {/* ═══ FOOTER — META ═══ */}
-      <footer className="py-16 px-6 border-t border-white/[0.03]">
+      <footer className="py-16 pb-24 xl:pb-16 px-6 border-t border-white/[0.03]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/10">{tx.metaTitle}</span>

@@ -189,3 +189,62 @@ body {
   background: rgba(255,87,34,0.3);
   color: #fff;
 }
+
+/* ═══ MOBILE OPTIMIZATIONS ═══ */
+@media (max-width: 768px) {
+  .grid-bg {
+    background-size: 40px 40px;
+  }
+
+  .grain-overlay::after {
+    opacity: 0.015;
+  }
+
+  .scanline::before {
+    display: none;
+  }
+
+  .cursor-glow {
+    display: none !important;
+  }
+}
+
+/* ═══ MOBILE BOTTOM NAV ═══ */
+.mobile-nav {
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  backdrop-filter: blur(20px) saturate(1.2);
+  background: rgba(0,0,0,0.85);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.mobile-nav-item {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ═══ ORACLE MOBILE FULLSCREEN ═══ */
+@media (max-width: 640px) {
+  .oracle-panel-mobile {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+}
+
+/* ═══ TOUCH TARGETS ═══ */
+@media (pointer: coarse) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ═══ SAFE AREA PADDING ═══ */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}

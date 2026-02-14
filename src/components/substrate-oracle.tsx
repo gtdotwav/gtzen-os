@@ -151,7 +151,7 @@ const conversationFlows: Record<Lang, Record<string, FlowNode>> = {
       responses: [
         "Esse é exatamente o tipo de pensamento que separa operadores de arquitetos.",
         "Um sistema que opera sozinho precisa de 4 camadas: visão clara, arquitetura de decisão, execução automatizada, e feedback loops.",
-        "O Geander construiu isso para a PAI, para a DryOn, e para mais de 10 empresas no portfólio. Não é teoria — é infraestrutura em produção.",
+        "O Geander construiu isso para a PAI, para a DryOn, e para mais de 10 empresas no portfólio — com parceria em gateways de pagamento, investimento na Shield Tech, e networking com CEOs de exits bilionários. Não é teoria — é infraestrutura em produção.",
         "Qual é o sistema que você quer construir? Me dê contexto.",
       ],
       followUp: "scale_detail",
@@ -222,7 +222,7 @@ const conversationFlows: Record<Lang, Record<string, FlowNode>> = {
       responses: [
         "That's exactly the thinking that separates operators from architects.",
         "A self-operating system needs 4 layers: clear vision, decision architecture, automated execution, and feedback loops.",
-        "Geander built this for PAI, DryOn, and 10+ portfolio companies. Not theory — infrastructure in production.",
+        "Geander built this for PAI, DryOn, and 10+ portfolio companies — with payment gateway partnerships, Shield Tech investment, and a network including CEOs of billion-dollar exits. Not theory — infrastructure in production.",
         "What system do you want to build? Give me context.",
       ],
       followUp: "scale_detail",
@@ -662,13 +662,13 @@ export function SubstrateOracle({ isOpen, onClose, lang, agentId }: SubstrateOra
           {/* Backdrop */}
           <div className="absolute inset-0 bg-black/90 backdrop-blur-xl" onClick={handleClose} />
 
-          {/* Oracle Panel */}
+          {/* Oracle Panel — fullscreen on mobile */}
           <motion.div
             initial={{ scale: 0.92, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 10 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full max-w-2xl h-[85vh] max-h-[750px] flex flex-col rounded-xl overflow-hidden"
+            className="oracle-panel-mobile relative w-full max-w-2xl h-[85vh] sm:max-h-[750px] flex flex-col rounded-xl overflow-hidden safe-bottom"
             onClick={(e) => e.stopPropagation()}
             style={{
               background: "linear-gradient(180deg, rgba(8,8,8,0.99) 0%, rgba(3,3,3,0.99) 100%)",
