@@ -20,8 +20,6 @@ import {
   Hexagon,
   Terminal,
   ChevronDown,
-  Minus,
-  Plus,
   Globe,
   X,
   Search,
@@ -34,11 +32,6 @@ import {
   Bot,
   BarChart3,
   Network,
-  Briefcase,
-  Camera,
-  Code2,
-  Plane,
-  Building2,
 } from "lucide-react"
 import dynamic from "next/dynamic"
 import { SubstrateOracle, OracleTrigger } from "@/components/substrate-oracle"
@@ -102,12 +95,6 @@ const t = {
     storiesLabel: "Fragmentos",
     storiesTitle: "Quem opera o substrato",
     storiesSub: "Não é currículo. É contexto. Cada destaque é uma camada da história que construiu o sistema.",
-    highlightUSA: "USA",
-    highlightPAI: "PAI",
-    highlightPortfolio: "Portfolio",
-    highlightLifestyle: "Lifestyle",
-    highlightCode: "Code",
-    highlightTravel: "Travel",
     lang: "EN",
   },
   en: {
@@ -160,12 +147,6 @@ const t = {
     storiesLabel: "Fragments",
     storiesTitle: "Who operates the substrate",
     storiesSub: "Not a resume. It's context. Each highlight is a layer of the story that built the system.",
-    highlightUSA: "USA",
-    highlightPAI: "PAI",
-    highlightPortfolio: "Portfolio",
-    highlightLifestyle: "Lifestyle",
-    highlightCode: "Code",
-    highlightTravel: "Travel",
     lang: "PT",
   },
 }
@@ -370,7 +351,7 @@ function SectionNav({ active, sections }: { active: number; sections: string[] }
               }`}
             >
               <div className={`w-1 h-1 rounded-full transition-all duration-500 ${active === i ? "bg-white/60" : "bg-white/12"}`} />
-              <span className={`font-mono text-[7px] uppercase tracking-wider transition-all duration-500 ${active === i ? "text-white/50" : "text-white/15"}`}>
+              <span className={`font-mono text-[8px] uppercase tracking-wider transition-all duration-500 ${active === i ? "text-white/60" : "text-white/25"}`}>
                 {s.slice(0, 4)}
               </span>
             </a>
@@ -459,7 +440,7 @@ function ProofTicker() {
         {doubled.map((item, i) => (
           <span key={i} className="font-mono text-[10px] text-white/15 whitespace-nowrap mx-8 uppercase tracking-wider">
             {item}
-            <span className="mx-8 text-white/8">·</span>
+            <span className="mx-8 text-white/15">·</span>
           </span>
         ))}
       </div>
@@ -503,7 +484,7 @@ function SystemNode({ label, description, icon: Icon, index, connections }: {
             <p className="text-xs text-white/30 leading-relaxed mb-3">{description}</p>
             <div className="flex flex-wrap gap-1.5">
               {connections.map((c) => (
-                <span key={c} className={`font-mono text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded transition-all duration-500 ${hovered ? "text-white/40 bg-white/[0.05]" : "text-white/12 bg-transparent"}`}>
+                <span key={c} className={`font-mono text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded transition-all duration-500 ${hovered ? "text-white/50 bg-white/[0.06]" : "text-white/20 bg-transparent"}`}>
                   → {c}
                 </span>
               ))}
@@ -516,50 +497,168 @@ function SystemNode({ label, description, icon: Icon, index, connections }: {
 }
 
 /* ═══════════════════════════════════════
-   CASE STUDY (expandable)
+   CASE STUDY — with integrated Chain Nodes
+   Each case study expands into a full visual
+   pipeline showing the business model + scale
    ═══════════════════════════════════════ */
-function CaseStudy({ number, title, thesis, layers, result, insight, metrics, index }: {
-  number: string; title: string; thesis: string; layers: string[]; result: string; insight: string; metrics?: { label: string; value: string }[]; index: number
+type ChainStep = { label: string; desc: string; icon: React.ComponentType<{ className?: string }> }
+
+function CaseStudy({ number, title, thesis, layers, result, insight, metrics, chain, color, index }: {
+  number: string; title: string; thesis: string; layers: string[]; result: string; insight: string
+  metrics?: { label: string; value: string }[]
+  chain: ChainStep[]
+  color: "amber" | "blue" | "green" | "purple"
+  index: number
 }) {
   const [expanded, setExpanded] = useState(false)
+  const [activeStep, setActiveStep] = useState<number | null>(null)
+
+  const colorMap = {
+    amber: { dot: "bg-amber-500/60", border: "border-amber-500/20", text: "text-amber-400/60", bg: "bg-amber-500/5", line: "from-amber-500/30 to-amber-500/5", glow: "shadow-amber-500/10" },
+    blue: { dot: "bg-blue-500/60", border: "border-blue-500/20", text: "text-blue-400/60", bg: "bg-blue-500/5", line: "from-blue-500/30 to-blue-500/5", glow: "shadow-blue-500/10" },
+    green: { dot: "bg-green-500/60", border: "border-green-500/20", text: "text-green-400/60", bg: "bg-green-500/5", line: "from-green-500/30 to-green-500/5", glow: "shadow-green-500/10" },
+    purple: { dot: "bg-purple-500/60", border: "border-purple-500/20", text: "text-purple-400/60", bg: "bg-purple-500/5", line: "from-purple-500/30 to-purple-500/5", glow: "shadow-purple-500/10" },
+  }
+  const c = colorMap[color]
+
   return (
     <Reveal delay={index * 0.1}>
       <div className="border-gradient border-gradient-hover rounded-lg group transition-all duration-700 cursor-pointer overflow-hidden" onClick={() => setExpanded(!expanded)}>
-        <div className="p-8">
+        <div className="p-6 sm:p-8">
           <div className="flex items-center justify-between mb-5">
-            <div className="flex items-baseline gap-4">
+            <div className="flex items-center gap-4">
+              <div className={`w-2.5 h-2.5 rounded-full ${c.dot} ${expanded ? "animate-pulse" : ""}`} />
               <span className="font-mono text-xs text-white/15">{number}</span>
-              <h3 className="text-xl font-light tracking-tight text-white/90">{title}</h3>
+              <h3 className="text-lg sm:text-xl font-light tracking-tight text-white/90">{title}</h3>
             </div>
-            <div className="text-white/15">{expanded ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}</div>
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-[9px] text-white/15 hidden sm:inline">{chain.length} nós</span>
+              <motion.div animate={{ rotate: expanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                <ChevronDown className="w-4 h-4 text-white/20" />
+              </motion.div>
+            </div>
           </div>
           <p className="text-sm text-white/45 mb-5 leading-relaxed max-w-lg">{thesis}</p>
           <div className="flex flex-wrap gap-2 mb-4">
             {layers.map((l, i) => (
-              <span key={i} className="font-mono text-[10px] uppercase tracking-widest text-white/25 border border-white/8 rounded-full px-3 py-1">{l}</span>
+              <span key={i} className="font-mono text-[10px] uppercase tracking-widest text-white/35 border border-white/12 rounded-full px-3 py-1">{l}</span>
             ))}
           </div>
-          <div className="flex items-center gap-2 text-xs text-white/35 group-hover:text-white/55 transition-colors">
-            <div className="w-1.5 h-1.5 rounded-full bg-green-500/50" />{result}
+          <div className="flex items-center gap-2 text-xs text-white/45 group-hover:text-white/65 transition-colors">
+            <div className="w-1.5 h-1.5 rounded-full bg-green-500/60 animate-pulse" />{result}
           </div>
         </div>
+
         <AnimatePresence>
           {expanded && (
-            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}>
-              <div className="px-8 pb-8 pt-2 border-t border-white/5">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="px-6 sm:px-8 pb-8 pt-4 border-t border-white/5">
+
+                {/* ═══ CADEIA VISUAL — Business Model Pipeline ═══ */}
+                <div className="mb-8">
+                  <div className="flex items-center gap-2 mb-5">
+                    <Network className="w-3.5 h-3.5 text-white/15" />
+                    <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/15">
+                      Cadeia do modelo
+                    </span>
+                  </div>
+
+                  <div className="relative" onClick={(e) => e.stopPropagation()}>
+                    {/* Connection line */}
+                    <div className={`absolute left-5 sm:left-6 top-0 bottom-0 w-px bg-gradient-to-b ${c.line}`} />
+
+                    {chain.map((step, i) => {
+                      const StepIcon = step.icon
+                      const isActive = activeStep === i
+                      return (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, x: -15 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.1, duration: 0.5 }}
+                          className="relative flex items-start gap-4 sm:gap-5 mb-5 last:mb-0 cursor-pointer"
+                          onClick={() => setActiveStep(isActive ? null : i)}
+                          onMouseEnter={() => setActiveStep(i)}
+                          onMouseLeave={() => setActiveStep(null)}
+                        >
+                          {/* Node circle */}
+                          <div className={`relative z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center shrink-0 transition-all duration-500 ${
+                            isActive
+                              ? `${c.bg} ${c.border} border shadow-lg ${c.glow}`
+                              : "bg-white/[0.03] border border-white/[0.06]"
+                          }`}>
+                            <StepIcon className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-500 ${isActive ? c.text : "text-white/25"}`} />
+                            {isActive && (
+                              <motion.div
+                                className={`absolute inset-0 rounded-lg ${c.border} border`}
+                                initial={{ scale: 1, opacity: 0.6 }}
+                                animate={{ scale: 1.4, opacity: 0 }}
+                                transition={{ duration: 1, repeat: Infinity }}
+                              />
+                            )}
+                          </div>
+
+                          {/* Content */}
+                          <div className="flex-1 pt-0.5">
+                            <div className="flex items-baseline gap-3 mb-1">
+                              <span className={`font-mono text-[9px] uppercase tracking-wider transition-colors duration-500 ${isActive ? c.text : "text-white/12"}`}>
+                                0{i + 1}
+                              </span>
+                              <h4 className={`text-sm font-mono transition-colors duration-500 ${isActive ? "text-white/85" : "text-white/45"}`}>
+                                {step.label}
+                              </h4>
+                            </div>
+                            <AnimatePresence>
+                              {isActive && (
+                                <motion.div
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: "auto" }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  transition={{ duration: 0.3 }}
+                                >
+                                  <p className="text-xs text-white/40 leading-relaxed mt-1 pr-4">
+                                    {step.desc}
+                                  </p>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+
+                          {/* Flow arrow */}
+                          {isActive && i < chain.length - 1 && (
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              className="absolute right-0 top-4 sm:top-5"
+                            >
+                              <ArrowRight className={`w-3 h-3 ${c.text}`} />
+                            </motion.div>
+                          )}
+                        </motion.div>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* ═══ INSIGHT + METRICS ═══ */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-white/[0.04]">
                   <div>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/15 mb-3 block">Insight estrutural</span>
-                    <p className="text-sm text-white/40 leading-relaxed">{insight}</p>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/25 mb-3 block">Insight estrutural</span>
+                    <p className="text-sm text-white/45 leading-relaxed">{insight}</p>
                   </div>
                   {metrics && (
                     <div>
-                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/15 mb-3 block">Indicadores</span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/25 mb-3 block">Indicadores</span>
                       <div className="space-y-3">
                         {metrics.map((m, i) => (
                           <div key={i} className="flex items-baseline justify-between">
                             <span className="text-xs text-white/25">{m.label}</span>
-                            <span className="font-mono text-sm text-white/65">{m.value}</span>
+                            <span className="font-mono text-sm text-white/75">{m.value}</span>
                           </div>
                         ))}
                       </div>
@@ -572,119 +671,6 @@ function CaseStudy({ number, title, thesis, layers, result, insight, metrics, in
         </AnimatePresence>
       </div>
     </Reveal>
-  )
-}
-
-/* ═══════════════════════════════════════
-   CHAIN FLOW — Interactive Model Pipeline
-   ═══════════════════════════════════════ */
-function ChainFlow({ title, subtitle, color, steps }: {
-  title: string
-  subtitle: string
-  color: "amber" | "blue" | "green"
-  steps: { label: string; desc: string; icon: React.ComponentType<{ className?: string }> }[]
-}) {
-  const [activeStep, setActiveStep] = useState<number | null>(null)
-  const [expanded, setExpanded] = useState(false)
-
-  const colorMap = {
-    amber: { dot: "bg-amber-500/60", border: "border-amber-500/20", text: "text-amber-400/60", bg: "bg-amber-500/5", line: "from-amber-500/30 to-amber-500/5" },
-    blue: { dot: "bg-blue-500/60", border: "border-blue-500/20", text: "text-blue-400/60", bg: "bg-blue-500/5", line: "from-blue-500/30 to-blue-500/5" },
-    green: { dot: "bg-green-500/60", border: "border-green-500/20", text: "text-green-400/60", bg: "bg-green-500/5", line: "from-green-500/30 to-green-500/5" },
-  }
-  const c = colorMap[color]
-
-  return (
-    <div className="mb-8">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className={`w-full text-left border-gradient border-gradient-hover rounded-lg p-5 sm:p-6 transition-all duration-500 ${expanded ? "bg-white/[0.01]" : ""}`}
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`w-2 h-2 rounded-full ${c.dot}`} />
-            <span className="text-sm sm:text-base font-light text-white/80">{title}</span>
-            <span className="font-mono text-[9px] text-white/15 uppercase tracking-wider hidden sm:inline">{subtitle}</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-[9px] text-white/15">{steps.length} {steps.length === 1 ? "step" : "steps"}</span>
-            <motion.div animate={{ rotate: expanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
-              <ChevronDown className="w-4 h-4 text-white/20" />
-            </motion.div>
-          </div>
-        </div>
-      </button>
-
-      <AnimatePresence>
-        {expanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="pt-4 pb-2 px-2">
-              {/* Pipeline visual */}
-              <div className="relative">
-                {/* Connection line */}
-                <div className={`absolute left-5 sm:left-6 top-0 bottom-0 w-px bg-gradient-to-b ${c.line}`} />
-
-                {steps.map((step, i) => {
-                  const Icon = step.icon
-                  const isActive = activeStep === i
-                  return (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: -12 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.08, duration: 0.4 }}
-                      className="relative flex items-start gap-4 sm:gap-5 mb-6 last:mb-0 cursor-pointer group"
-                      onClick={() => setActiveStep(isActive ? null : i)}
-                      onMouseEnter={() => setActiveStep(i)}
-                      onMouseLeave={() => setActiveStep(null)}
-                    >
-                      {/* Node */}
-                      <div className={`relative z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center shrink-0 transition-all duration-500 ${isActive ? `${c.bg} ${c.border} border` : "bg-white/[0.03] border border-white/[0.06]"}`}>
-                        <Icon className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-500 ${isActive ? c.text : "text-white/25"}`} />
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 pt-1">
-                        <div className="flex items-baseline gap-3 mb-1">
-                          <span className="font-mono text-[9px] text-white/12 uppercase tracking-wider">0{i + 1}</span>
-                          <h4 className={`text-sm font-mono transition-colors duration-500 ${isActive ? "text-white/80" : "text-white/50"}`}>{step.label}</h4>
-                        </div>
-                        <AnimatePresence>
-                          {isActive && (
-                            <motion.p
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="text-xs text-white/30 leading-relaxed"
-                            >
-                              {step.desc}
-                            </motion.p>
-                          )}
-                        </AnimatePresence>
-                      </div>
-
-                      {/* Arrow connector */}
-                      {i < steps.length - 1 && (
-                        <div className="hidden sm:block absolute left-5 sm:left-6 top-10 sm:top-12 transform -translate-x-[0.5px]">
-                          <div className={`w-px h-4 ${isActive ? c.line.replace("from-", "bg-").split(" ")[0] : "bg-white/[0.06]"}`} />
-                        </div>
-                      )}
-                    </motion.div>
-                  )
-                })}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
   )
 }
 
@@ -761,10 +747,67 @@ export default function SubstratoPage() {
   ]
 
   const cases = [
-    { number: "001", title: "DryOn", thesis: "Uma marca de secadores não é sobre secadores. É sobre a narrativa de cuidado e identidade que o produto carrega. Construí a DryOn como um sistema de marca completo.", layers: ["branding", "e-commerce", "narrativa", "performance"], result: "Marca operando como ecossistema", insight: "Tratar o produto como veículo de identidade, não commodity. Cada decisão de branding alimentava a performance — um loop, não sequência.", metrics: [{ label: "Camadas", value: "4" }, { label: "Tempo", value: "90d" }, { label: "Modelo", value: "Sistema" }] },
-    { number: "002", title: "PAI — Partners in A.I", thesis: "Fundei a PAI para resolver um gap: empresas querem IA mas não têm infraestrutura de pensamento para usá-la. Não vendemos ferramentas — vendemos a camada de inteligência que falta.", layers: ["IA aplicada", "consultoria", "automação", "estratégia"], result: "Empresa ativa com clientes em operação", insight: "O mercado não precisa de mais ferramentas de IA. Precisa de quem entenda a arquitetura de decisão por trás. A PAI é essa camada.", metrics: [{ label: "Pipelines ativos", value: "7+" }, { label: "Decisões automatizadas", value: "85%" }, { label: "Tempo economizado", value: "12h/sem" }] },
-    { number: "003", title: "Portfólio de Investimentos", thesis: "Sócio de fundos e investidor com parceria em gateways de pagamento — incluindo a Shield Tech, inovadores em tecnologia no Rio com networking nacional. Sócio de CEOs que venderam empresas por valores acima de R$ 1BI. Avalio tudo pela qualidade da infraestrutura, não do produto.", layers: ["venture", "gateways", "diligência", "escala", "governança 360°"], result: "10+ empresas em portfólio ativo · Parcerias com exits bilionários", insight: "A tese é simples: investir em fundadores que pensam em sistemas, não em funcionalidades. O produto muda. O sistema permanece. Com acesso a operadores que já consolidaram estruturas 360° em escala bilionária, o deal flow é outro nível.", metrics: [{ label: "Empresas", value: "10+" }, { label: "Parcerias", value: "Shield Tech · Gateways" }, { label: "Network", value: "Exits >R$1BI" }, { label: "Papel", value: "Ativo · 360°" }] },
-    { number: "004", title: "Ativos Digitais", thesis: "Cada conteúdo e sistema que crio é projetado como ativo — gera valor composto ao longo do tempo, não apenas no momento da publicação.", layers: ["produtos digitais", "escala", "IP", "distribuição"], result: "Portfólio que escala sem operação", insight: "Não pergunto 'o que publicar hoje?' — pergunto 'o que vai gerar retorno em 6 meses?'. Isso muda a arquitetura de tudo.", metrics: [{ label: "Ativos", value: "12+" }, { label: "Recorrência", value: "Sim" }, { label: "Operação", value: "~0" }] },
+    {
+      number: "001", title: "DryOn", color: "amber" as const,
+      thesis: "Uma marca de desodorantes não é sobre desodorantes. É sobre a narrativa de cuidado e identidade que o produto carrega. Como HEAD de IA & Growth, construí a DryOn como um sistema de marca completo — do site à esteira de conteúdo com IA.",
+      layers: ["branding", "e-commerce", "IA & growth", "narrativa", "performance"],
+      result: "HEAD de IA & Growth · Marca operando como ecossistema",
+      insight: "Tratar o produto como veículo de identidade, não commodity. Cada decisão de branding alimentava a performance — um loop, não sequência. A esteira de conteúdo com IA eliminou a dependência de equipe criativa manual.",
+      metrics: [{ label: "Posição", value: "HEAD de IA" }, { label: "Camadas", value: "5" }, { label: "Automação", value: "Esteira IA" }, { label: "Modelo", value: "Sistema" }],
+      chain: [
+        { label: lang === "pt" ? "Diagnóstico de Marca" : "Brand Diagnosis", desc: lang === "pt" ? "Mapear mercado de desodorantes, gaps de posicionamento, e oportunidades de narrativa que nenhum concorrente ocupa" : "Map deodorant market, positioning gaps, and narrative opportunities no competitor occupies", icon: Search },
+        { label: lang === "pt" ? "Arquitetura de Marca" : "Brand Architecture", desc: lang === "pt" ? "DNA da DryOn: identidade visual, tom de voz, narrativa de cuidado pessoal, sistema visual completo. Marca como sistema vivo" : "DryOn DNA: visual identity, voice tone, personal care narrative, complete visual system. Brand as living system", icon: Palette },
+        { label: lang === "pt" ? "Site & E-commerce" : "Site & E-commerce", desc: lang === "pt" ? "Site construído como funil de conversão — cada página é uma decisão de arquitetura, não decoração" : "Site built as conversion funnel — every page is an architecture decision, not decoration", icon: Code },
+        { label: lang === "pt" ? "Esteira IA de Conteúdo" : "AI Content Pipeline", desc: lang === "pt" ? "Pipeline de produção de conteúdo digital com IA: do briefing ao post final. Elimina gargalo criativo humano" : "AI digital content production pipeline: from brief to final post. Eliminates human creative bottleneck", icon: Bot },
+        { label: lang === "pt" ? "Automação de Growth" : "Growth Automation", desc: lang === "pt" ? "Performance marketing + funis automatizados + loops de feedback. Sistema que escala sem intervenção manual" : "Performance marketing + automated funnels + feedback loops. System that scales without manual intervention", icon: TrendingUp },
+        { label: lang === "pt" ? "Operação Autônoma" : "Autonomous Operation", desc: lang === "pt" ? "Zero intervenção manual no funil. Marca operando como ecossistema auto-sustentável. Crescimento composto" : "Zero manual funnel intervention. Brand operating as self-sustaining ecosystem. Compound growth", icon: Zap },
+      ],
+    },
+    {
+      number: "002", title: "PAI — Partners in A.I", color: "blue" as const,
+      thesis: "Fundei a PAI para resolver um gap: empresas querem IA mas não têm infraestrutura de pensamento para usá-la. Não vendemos ferramentas — vendemos a camada de inteligência que falta.",
+      layers: ["IA aplicada", "consultoria", "automação", "estratégia"],
+      result: "Empresa ativa com clientes em operação",
+      insight: "O mercado não precisa de mais ferramentas de IA. Precisa de quem entenda a arquitetura de decisão por trás. A PAI é essa camada.",
+      metrics: [{ label: "Pipelines ativos", value: "7+" }, { label: "Decisões automatizadas", value: "85%" }, { label: "Tempo economizado", value: "12h/sem" }],
+      chain: [
+        { label: lang === "pt" ? "Auditoria de Processos" : "Process Audit", desc: lang === "pt" ? "Mapear todos os processos repetitivos e decisões manuais da empresa. Identificar onde IA gera ROI real, não hype" : "Map all repetitive processes and manual decisions. Identify where AI generates real ROI, not hype", icon: Search },
+        { label: lang === "pt" ? "Arquitetura de Decisão" : "Decision Architecture", desc: lang === "pt" ? "Desenhar pipelines de decisão com LLMs — cada prompt é uma decisão de arquitetura, não um comando" : "Design decision pipelines with LLMs — each prompt is an architecture decision, not a command", icon: Brain },
+        { label: lang === "pt" ? "Deploy em Produção" : "Production Deploy", desc: lang === "pt" ? "n8n, APIs customizadas, agents autônomos. Tudo em produção, não em slides" : "n8n, custom APIs, autonomous agents. Everything in production, not slides", icon: Code },
+        { label: lang === "pt" ? "Feedback Loops" : "Feedback Loops", desc: lang === "pt" ? "Sistemas que aprendem sozinhos. Cada interação melhora o pipeline. O sistema evolui sem intervenção" : "Self-learning systems. Each interaction improves the pipeline. System evolves without intervention", icon: Network },
+        { label: lang === "pt" ? "Escala Automatizada" : "Automated Scale", desc: lang === "pt" ? "85% das decisões operacionais automatizadas. 12h/semana economizadas por cliente. O fundador para de apagar incêndio" : "85% operational decisions automated. 12h/week saved per client. Founder stops firefighting", icon: Zap },
+      ],
+    },
+    {
+      number: "003", title: "Portfólio de Investimentos", color: "green" as const,
+      thesis: "Sócio de fundos e investidor com parceria em gateways de pagamento — incluindo a Shield Tech, inovadores em tecnologia no Rio com networking nacional. Sócio de CEOs que venderam empresas por valores acima de R$ 1BI. Avalio tudo pela qualidade da infraestrutura, não do produto.",
+      layers: ["venture", "gateways", "diligência", "escala", "governança 360°"],
+      result: "10+ empresas em portfólio ativo · Parcerias com exits bilionários",
+      insight: "A tese é simples: investir em fundadores que pensam em sistemas, não em funcionalidades. O produto muda. O sistema permanece. Com acesso a operadores que já consolidaram estruturas 360° em escala bilionária, o deal flow é outro nível.",
+      metrics: [{ label: "Empresas", value: "10+" }, { label: "Parcerias", value: "Shield Tech · Gateways" }, { label: "Network", value: "Exits >R$1BI" }, { label: "Papel", value: "Ativo · 360°" }],
+      chain: [
+        { label: lang === "pt" ? "Tese de Investimento" : "Investment Thesis", desc: lang === "pt" ? "Infraestrutura > features. Sistemas > produtos. Investir em quem pensa em arquitetura, não em funcionalidades bonitas" : "Infrastructure > features. Systems > products. Invest in those who think architecture, not pretty features", icon: Brain },
+        { label: lang === "pt" ? "Due Diligence" : "Due Diligence", desc: lang === "pt" ? "Avaliar fundadores pela qualidade do sistema, não do produto. Sócios com exits acima de R$ 1BI validam o dealflow" : "Evaluate founders by system quality, not product. Partners with R$1BI+ exits validate dealflow", icon: Shield },
+        { label: lang === "pt" ? "Alocação Estratégica" : "Strategic Allocation", desc: lang === "pt" ? "Capital + infraestrutura de IA + networking nacional como valor agregado. Parceria com gateways de pagamento e Shield Tech" : "Capital + AI infra + nationwide network as added value. Partnership with payment gateways and Shield Tech", icon: Target },
+        { label: lang === "pt" ? "Operação 360°" : "360° Operation", desc: lang === "pt" ? "Board ativo. Visão completa: branding, tech, growth, finanças. Decisões de arquitetura com conhecimento de todas as áreas" : "Active board. Complete vision: branding, tech, growth, finance. Architecture decisions with full-stack knowledge", icon: Layers },
+        { label: lang === "pt" ? "Escala & Retorno" : "Scale & Return", desc: lang === "pt" ? "10+ empresas escalando. Portfólio em produção. Network com operadores de exits bilionários alimenta novas oportunidades" : "10+ companies scaling. Portfolio in production. Network with billion-exit operators feeds new opportunities", icon: TrendingUp },
+      ],
+    },
+    {
+      number: "004", title: "Ativos Digitais", color: "purple" as const,
+      thesis: "Cada conteúdo e sistema que crio é projetado como ativo — gera valor composto ao longo do tempo, não apenas no momento da publicação.",
+      layers: ["produtos digitais", "escala", "IP", "distribuição"],
+      result: "Portfólio que escala sem operação",
+      insight: "Não pergunto 'o que publicar hoje?' — pergunto 'o que vai gerar retorno em 6 meses?'. Isso muda a arquitetura de tudo.",
+      metrics: [{ label: "Ativos", value: "12+" }, { label: "Recorrência", value: "Sim" }, { label: "Operação", value: "~0" }],
+      chain: [
+        { label: lang === "pt" ? "Identificação de Ativo" : "Asset Identification", desc: lang === "pt" ? "Mapear que tipo de conteúdo/sistema gera retorno composto — não viral, composto. Valor que cresce no tempo" : "Map what content/system generates compound return — not viral, compound. Value that grows over time", icon: Search },
+        { label: lang === "pt" ? "Arquitetura de IP" : "IP Architecture", desc: lang === "pt" ? "Cada ativo é projetado como propriedade intelectual: template, framework, sistema. Não é conteúdo — é infraestrutura" : "Each asset is designed as intellectual property: template, framework, system. Not content — infrastructure", icon: Layers },
+        { label: lang === "pt" ? "Produção com IA" : "AI Production", desc: lang === "pt" ? "Pipeline de criação automatizada. Da ideia ao ativo publicado com mínima intervenção humana" : "Automated creation pipeline. From idea to published asset with minimal human intervention", icon: Bot },
+        { label: lang === "pt" ? "Distribuição Automatizada" : "Automated Distribution", desc: lang === "pt" ? "Sistemas de distribuição que funcionam 24/7. SEO, funis, marketplaces — tudo operando sem manutenção" : "Distribution systems that run 24/7. SEO, funnels, marketplaces — all operating maintenance-free", icon: Rocket },
+        { label: lang === "pt" ? "Retorno Composto" : "Compound Return", desc: lang === "pt" ? "Portfólio de 12+ ativos gerando receita recorrente com operação próxima de zero. Cada ativo alimenta o próximo" : "Portfolio of 12+ assets generating recurring revenue with near-zero operation. Each asset feeds the next", icon: TrendingUp },
+      ],
+    },
   ]
 
   const layers = [
@@ -860,7 +903,7 @@ export default function SubstratoPage() {
                 <div className="w-2 h-2 rounded-full bg-red-500/30" />
                 <div className="w-2 h-2 rounded-full bg-yellow-500/30" />
                 <div className="w-2 h-2 rounded-full bg-green-500/30" />
-                <span className="font-mono text-[9px] text-white/12 ml-2">substrato.sh</span>
+                <span className="font-mono text-[9px] text-white/20 ml-2">substrato.sh</span>
               </div>
               <TypingTerminal />
             </div>
@@ -884,15 +927,15 @@ export default function SubstratoPage() {
             </motion.h1>
 
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 1 }}
-              className="font-mono text-[11px] sm:text-xs text-white/20 max-w-xl mx-auto lg:mx-0 leading-relaxed tracking-wide">
+              className="font-mono text-[11px] sm:text-xs text-white/30 max-w-xl mx-auto lg:mx-0 leading-relaxed tracking-wide">
               {tx.sub}
             </motion.p>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2, duration: 1 }} className="mt-8 flex items-center gap-6 sm:gap-8 justify-center lg:justify-start flex-wrap">
               {stats.map((s) => (
                 <div key={s.label} className="text-center lg:text-left">
-                  <div className="font-mono text-xl sm:text-2xl text-white/65"><Counter value={s.value} suffix="+" /></div>
-                  <div className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.2em] text-white/15 mt-1">{s.label}</div>
+                  <div className="font-mono text-xl sm:text-2xl text-white/70"><Counter value={s.value} suffix="+" /></div>
+                  <div className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.2em] text-white/20 mt-1">{s.label}</div>
                 </div>
               ))}
             </motion.div>
@@ -900,8 +943,8 @@ export default function SubstratoPage() {
         </div>
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3, duration: 1 }} className="absolute bottom-8 flex flex-col items-center gap-2">
-          <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-white/10">{tx.scroll}</span>
-          <ChevronDown className="w-4 h-4 text-white/10 animate-bounce" />
+          <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-white/15">{tx.scroll}</span>
+          <ChevronDown className="w-4 h-4 text-white/15 animate-bounce" />
         </motion.div>
       </motion.section>
 
@@ -914,7 +957,7 @@ export default function SubstratoPage() {
           <Reveal>
             <div className="flex items-center gap-3 mb-16">
               <div className="w-12 h-px bg-gradient-to-r from-white/15 to-transparent" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">00 — {tx.tese}</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">00 — {tx.tese}</span>
             </div>
           </Reveal>
           <Reveal delay={0.1}>
@@ -923,70 +966,184 @@ export default function SubstratoPage() {
             </p>
           </Reveal>
           <Reveal delay={0.25}>
-            <p className="text-sm text-white/25 leading-[1.9] max-w-xl mb-8">{tx.teseBody}</p>
+            <p className="text-sm text-white/35 leading-[1.9] max-w-xl mb-8">{tx.teseBody}</p>
           </Reveal>
           <Reveal delay={0.35}>
             <div className="flex items-center gap-4">
-              <div className="w-8 h-px bg-white/8" />
-              <p className="font-mono text-[11px] text-white/15 italic">&quot;{tx.teseQuote}&quot;</p>
+              <div className="w-8 h-px bg-white/10" />
+              <p className="font-mono text-[11px] text-white/25 italic">&quot;{tx.teseQuote}&quot;</p>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* ═══ HIGHLIGHTS — Quem Opera o Substrato ═══ */}
-      <section className="relative py-24 sm:py-32 px-6">
-        <div className="max-w-4xl mx-auto">
+      {/* ═══ OPERADOR — Quem Opera o Substrato ═══ */}
+      <section className="relative py-32 sm:py-40 px-6 overflow-hidden">
+        {/* Background accent */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.01] to-transparent" />
+
+        <div className="relative max-w-5xl mx-auto">
           <Reveal>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-px bg-gradient-to-r from-white/15 to-transparent" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">{tx.storiesLabel}</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">{tx.storiesLabel}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight mb-3 text-white/90">{tx.storiesTitle}</h2>
-            <p className="text-sm text-white/25 max-w-lg mb-12 leading-relaxed">{tx.storiesSub}</p>
+            <p className="text-sm text-white/35 max-w-lg mb-16 leading-relaxed">{tx.storiesSub}</p>
           </Reveal>
 
-          {/* Highlight Circles */}
-          <Reveal delay={0.15}>
-            <div className="flex items-start gap-6 sm:gap-8 overflow-x-auto pb-4 justify-center flex-wrap">
-              {[
-                { key: "usa", label: tx.highlightUSA, icon: <Globe className="w-6 h-6" /> },
-                { key: "pai", label: tx.highlightPAI, icon: <Building2 className="w-6 h-6" /> },
-                { key: "portfolio", label: tx.highlightPortfolio, icon: <Briefcase className="w-6 h-6" /> },
-                { key: "lifestyle", label: tx.highlightLifestyle, icon: <Camera className="w-6 h-6" /> },
-                { key: "code", label: tx.highlightCode, icon: <Code2 className="w-6 h-6" /> },
-                { key: "travel", label: tx.highlightTravel, icon: <Plane className="w-6 h-6" /> },
-              ].map((h, i) => (
-                <motion.button
-                  key={h.key}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + i * 0.08 }}
-                  className="flex flex-col items-center gap-2.5 group cursor-pointer"
-                  title={lang === "pt" ? "Adicione imagens em /public/highlights/" + h.key : "Add images to /public/highlights/" + h.key}
-                >
-                  <div className="relative w-[72px] h-[72px]">
-                    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
-                      <circle cx="50" cy="50" r="46" fill="none" strokeWidth="3" className="stroke-white/20 group-hover:stroke-white/40 transition-colors duration-500" strokeDasharray="4 4" />
-                    </svg>
-                    <div className="absolute inset-[5px] rounded-full bg-white/[0.03] group-hover:bg-white/[0.06] p-[2px] transition-all duration-500 flex items-center justify-center">
-                      <div className="text-white/25 group-hover:text-white/50 transition-colors duration-500">
-                        {h.icon}
-                      </div>
+          {/* ═══ IDENTITY DOSSIER ═══ */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-8 lg:gap-12">
+
+            {/* LEFT — Profile card */}
+            <Reveal delay={0.1}>
+              <div className="border-gradient rounded-xl p-6 sm:p-8 h-full">
+                {/* Profile header */}
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] flex items-center justify-center border border-white/[0.06]">
+                      <span className="font-mono text-2xl font-light text-white/70">G</span>
                     </div>
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500/60 border-2 border-black animate-pulse" />
                   </div>
-                  <span className="text-[10px] font-mono text-white/25 group-hover:text-white/45 uppercase tracking-wider transition-colors">
-                    {h.label}
+                  <div>
+                    <h3 className="font-mono text-sm text-white/85 tracking-wide">Geander</h3>
+                    <p className="font-mono text-[10px] text-white/30 uppercase tracking-wider">{lang === "pt" ? "Operador do Substrato" : "Substrate Operator"}</p>
+                  </div>
+                </div>
+
+                {/* Quick stats */}
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  {[
+                    { label: lang === "pt" ? "Idade" : "Age", value: "22" },
+                    { label: lang === "pt" ? "Idiomas" : "Languages", value: "4" },
+                    { label: lang === "pt" ? "Empresas" : "Companies", value: "10+" },
+                    { label: lang === "pt" ? "Sistemas" : "Systems", value: "15+" },
+                  ].map((s, i) => (
+                    <div key={i} className="bg-white/[0.02] rounded-lg px-3 py-2.5 border border-white/[0.04]">
+                      <div className="font-mono text-lg text-white/70">{s.value}</div>
+                      <div className="font-mono text-[8px] uppercase tracking-[0.2em] text-white/20 mt-0.5">{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Roles */}
+                <div className="space-y-2">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/20 block mb-2">
+                    {lang === "pt" ? "Posições ativas" : "Active positions"}
                   </span>
-                </motion.button>
-              ))}
-            </div>
-          </Reveal>
+                  {[
+                    { role: "CEO & Founder", org: "PAI — Partners in A.I", dot: "bg-blue-400/60" },
+                    { role: lang === "pt" ? "Sócio de fundo" : "Fund Partner", org: lang === "pt" ? "Fundo de investimento · 10+ empresas" : "Investment fund · 10+ companies", dot: "bg-green-400/60" },
+                    { role: lang === "pt" ? "Investidor" : "Investor", org: "Shield Tech · Gateways", dot: "bg-amber-400/60" },
+                    { role: "HEAD IA & Growth", org: "DryOn", dot: "bg-purple-400/60" },
+                  ].map((r, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 + i * 0.08 }}
+                      className="flex items-start gap-3 py-2 border-b border-white/[0.03] last:border-0"
+                    >
+                      <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${r.dot}`} />
+                      <div>
+                        <span className="font-mono text-[11px] text-white/60 block">{r.role}</span>
+                        <span className="font-mono text-[9px] text-white/25">{r.org}</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
+            {/* RIGHT — Timeline journey */}
+            <Reveal delay={0.2}>
+              <div className="relative">
+                {/* Vertical timeline line */}
+                <div className="absolute left-[15px] sm:left-[19px] top-0 bottom-0 w-px bg-gradient-to-b from-white/[0.08] via-white/[0.04] to-transparent" />
+
+                <div className="space-y-1">
+                  {[
+                    {
+                      year: "2020",
+                      title: lang === "pt" ? "Vivência nos EUA" : "US Experience",
+                      desc: lang === "pt" ? "Imersão internacional — inglês fluente, visão global, entendimento de mercados de escala." : "International immersion — fluent English, global vision, understanding of scale markets.",
+                      icon: Globe,
+                      accent: "text-blue-400/50",
+                    },
+                    {
+                      year: "2022",
+                      title: lang === "pt" ? "Fundação da PAI" : "PAI Founded",
+                      desc: lang === "pt" ? "Partners in A.I — empresa de inteligência artificial aplicada. De conceito a pipeline com 7+ clientes e 85% de decisões automatizadas." : "Partners in A.I — applied artificial intelligence company. From concept to pipeline with 7+ clients and 85% automated decisions.",
+                      icon: Brain,
+                      accent: "text-cyan-400/50",
+                    },
+                    {
+                      year: "2023",
+                      title: lang === "pt" ? "Fundo de Investimento" : "Investment Fund",
+                      desc: lang === "pt" ? "Sócio de fundo com 10+ empresas em portfólio. Tese: infraestrutura > produto. Sócios com exits acima de R$ 1BI." : "Fund partner with 10+ portfolio companies. Thesis: infrastructure > product. Partners with R$1BI+ exits.",
+                      icon: TrendingUp,
+                      accent: "text-green-400/50",
+                    },
+                    {
+                      year: "2024",
+                      title: lang === "pt" ? "Shield Tech & Gateways" : "Shield Tech & Gateways",
+                      desc: lang === "pt" ? "Investimento na Shield Tech e parcerias estratégicas com gateways de pagamento. Network com operadores de escala nacional." : "Shield Tech investment and strategic partnerships with payment gateways. Network with national-scale operators.",
+                      icon: Shield,
+                      accent: "text-amber-400/50",
+                    },
+                    {
+                      year: "2025",
+                      title: lang === "pt" ? "DryOn · HEAD de IA & Growth" : "DryOn · HEAD of AI & Growth",
+                      desc: lang === "pt" ? "Sistema de marca completo — do branding à esteira IA de conteúdo. Operação autônoma atingida: zero intervenção manual no funil." : "Complete brand system — from branding to AI content pipeline. Autonomous operation achieved: zero manual funnel intervention.",
+                      icon: Rocket,
+                      accent: "text-purple-400/50",
+                    },
+                    {
+                      year: "2026",
+                      title: lang === "pt" ? "Substrato v3 · Este site" : "Substrate v3 · This site",
+                      desc: lang === "pt" ? "Código puro, projetado como produto. O mesmo approach que aplico a tudo: construir infraestrutura, não páginas." : "Pure code, designed as product. The same approach I apply to everything: build infrastructure, not pages.",
+                      icon: Code,
+                      accent: "text-white/40",
+                    },
+                  ].map((event, i) => {
+                    const EventIcon = event.icon
+                    return (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 + i * 0.08 }}
+                        className="relative flex gap-4 sm:gap-5 group pl-0"
+                      >
+                        {/* Timeline node */}
+                        <div className="relative z-10 shrink-0">
+                          <div className="w-[31px] h-[31px] sm:w-[39px] sm:h-[39px] rounded-lg bg-black border border-white/[0.08] group-hover:border-white/[0.15] flex items-center justify-center transition-all duration-500">
+                            <EventIcon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${event.accent} group-hover:text-white/60 transition-colors duration-500`} />
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 pb-6 sm:pb-8">
+                          <div className="flex items-baseline gap-3 mb-1.5">
+                            <span className="font-mono text-[10px] text-white/20 tabular-nums">{event.year}</span>
+                            <h4 className="text-sm sm:text-[15px] font-light text-white/80 group-hover:text-white/90 transition-colors">{event.title}</h4>
+                          </div>
+                          <p className="text-xs text-white/30 group-hover:text-white/40 leading-relaxed transition-colors duration-500 max-w-md">{event.desc}</p>
+                        </div>
+                      </motion.div>
+                    )
+                  })}
+                </div>
+              </div>
+            </Reveal>
+          </div>
 
           {/* Logo Cloud */}
-          <Reveal delay={0.3}>
-            <div className="mt-16">
+          <Reveal delay={0.35}>
+            <div className="mt-20">
               <div className="mx-auto my-5 h-px max-w-sm bg-white/[0.06] [mask-image:linear-gradient(to_right,transparent,black,transparent)]" />
               <LogoCloud logos={[
                 { src: "https://svgl.app/library/openai_wordmark_light.svg", alt: "OpenAI" },
@@ -1010,10 +1167,10 @@ export default function SubstratoPage() {
           <Reveal>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-px bg-gradient-to-r from-white/15 to-transparent" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">01 — {tx.framework}</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">01 — {tx.framework}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-4 text-white/90">{tx.frameworkTitle}</h2>
-            <p className="text-sm text-white/25 max-w-lg mb-16 leading-relaxed">{tx.frameworkSub}</p>
+            <p className="text-sm text-white/35 max-w-lg mb-16 leading-relaxed">{tx.frameworkSub}</p>
           </Reveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1021,12 +1178,12 @@ export default function SubstratoPage() {
               <Reveal key={layer.name} delay={i * 0.1}>
                 <div className="framework-node border-gradient rounded-lg p-6 h-full relative overflow-hidden group hover:bg-white/[0.02] transition-all duration-700">
                   <div className="flex items-center gap-2 mb-4">
-                    <layer.icon className="w-4 h-4 text-white/25" />
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-white/15">L{i}</span>
+                    <layer.icon className="w-4 h-4 text-white/30 group-hover:text-white/50 transition-colors duration-500" />
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-white/20 group-hover:text-white/35 transition-colors duration-500">L{i}</span>
                   </div>
                   <h3 className="text-lg font-light text-white/85 mb-2">{layer.name}</h3>
                   <p className="text-xs text-white/30 mb-3">{layer.desc}</p>
-                  <p className="text-[10px] text-white/20 font-mono">{layer.detail}</p>
+                  <p className="text-[10px] text-white/30 font-mono">{layer.detail}</p>
                   {i < 3 && <div className="hidden lg:block absolute right-0 top-1/2 w-4 h-px bg-gradient-to-r from-white/10 to-transparent translate-x-full" />}
                 </div>
               </Reveal>
@@ -1041,10 +1198,10 @@ export default function SubstratoPage() {
           <Reveal>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-px bg-gradient-to-r from-white/15 to-transparent" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">02 — {tx.sistema}</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">02 — {tx.sistema}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-4 text-white/90">{tx.sistemaTitle}</h2>
-            <p className="text-sm text-white/25 max-w-lg mb-16 leading-relaxed">{tx.sistemaSub}</p>
+            <p className="text-sm text-white/35 max-w-lg mb-16 leading-relaxed">{tx.sistemaSub}</p>
           </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {nodes.map((n, i) => <SystemNode key={n.label} {...n} index={i} />)}
@@ -1058,93 +1215,34 @@ export default function SubstratoPage() {
           <Reveal>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-px bg-gradient-to-r from-white/15 to-transparent" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">03 — {tx.provas}</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">03 — {tx.provas}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-4 text-white/90">
               {tx.provasTitle1}<br /><span className="text-white/45">{tx.provasTitle2}</span>
             </h2>
-            <p className="text-sm text-white/25 max-w-lg mb-16 leading-relaxed">{tx.provasSub}</p>
+            <p className="text-sm text-white/35 max-w-lg mb-16 leading-relaxed">{tx.provasSub}</p>
           </Reveal>
 
-          {/* ═══ CADEIA DE MODELOS — Interactive Visual Chains ═══ */}
+          {/* ═══ CADEIA DE MODELOS — Each case study has integrated chain nodes ═══ */}
           <div className="space-y-6 mb-16">
             {cases.map((c, i) => (
               <CaseStudy key={c.number} {...c} index={i} />
             ))}
           </div>
 
-          {/* ═══ CADEIA VISUAL — Work Model Pipeline ═══ */}
-          <Reveal delay={0.15}>
-            <div className="mb-16">
-              <div className="flex items-center gap-3 mb-8">
-                <Network className="w-4 h-4 text-white/20" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">
-                  {lang === "pt" ? "Cadeia de Modelos" : "Model Chain"}
-                </span>
-              </div>
-              <p className="text-sm text-white/25 max-w-lg mb-10 leading-relaxed">
-                {lang === "pt"
-                  ? "Cada projeto segue uma cadeia. Não é linear — é uma rede de decisões que se alimentam. Clique para explorar cada etapa."
-                  : "Each project follows a chain. Not linear — a network of decisions that feed each other. Click to explore each step."}
-              </p>
-
-              {/* Chain 1: Brand System */}
-              <ChainFlow
-                title={lang === "pt" ? "Cadeia: Sistema de Marca" : "Chain: Brand System"}
-                subtitle="DryOn · PAI"
-                color="amber"
-                steps={[
-                  { label: lang === "pt" ? "Diagnóstico" : "Diagnosis", desc: lang === "pt" ? "Mapear mercado, gaps, e posicionamento vazio" : "Map market, gaps, and empty positioning", icon: Search },
-                  { label: lang === "pt" ? "Arquitetura" : "Architecture", desc: lang === "pt" ? "Definir DNA, narrativa, sistema visual, tom" : "Define DNA, narrative, visual system, tone", icon: Layers },
-                  { label: lang === "pt" ? "Execução" : "Execution", desc: lang === "pt" ? "Site, conteúdo, funil, e-commerce" : "Site, content, funnel, e-commerce", icon: Rocket },
-                  { label: lang === "pt" ? "Automação" : "Automation", desc: lang === "pt" ? "Pipelines IA para conteúdo e decisão" : "AI pipelines for content and decisions", icon: Bot },
-                  { label: lang === "pt" ? "Escala" : "Scale", desc: lang === "pt" ? "Sistema auto-operante. Crescimento composto" : "Self-operating system. Compound growth", icon: TrendingUp },
-                ]}
-              />
-
-              {/* Chain 2: AI Infrastructure */}
-              <ChainFlow
-                title={lang === "pt" ? "Cadeia: Infraestrutura IA" : "Chain: AI Infrastructure"}
-                subtitle="PAI · Portfólio"
-                color="blue"
-                steps={[
-                  { label: lang === "pt" ? "Auditoria" : "Audit", desc: lang === "pt" ? "Mapear processos repetitivos e decisões manuais" : "Map repetitive processes and manual decisions", icon: Search },
-                  { label: lang === "pt" ? "Design" : "Design", desc: lang === "pt" ? "Arquitetar pipelines de decisão com LLMs" : "Architect decision pipelines with LLMs", icon: Brain },
-                  { label: lang === "pt" ? "Deploy" : "Deploy", desc: lang === "pt" ? "n8n, APIs, agents autônomos em produção" : "n8n, APIs, autonomous agents in production", icon: Code },
-                  { label: lang === "pt" ? "Feedback" : "Feedback", desc: lang === "pt" ? "Loops de aprendizado. O sistema melhora sozinho" : "Learning loops. The system improves itself", icon: Network },
-                  { label: lang === "pt" ? "Escala" : "Scale", desc: lang === "pt" ? "85% das decisões automatizadas. 12h/sem economizadas" : "85% decisions automated. 12h/week saved", icon: Zap },
-                ]}
-              />
-
-              {/* Chain 3: Growth & Investment */}
-              <ChainFlow
-                title={lang === "pt" ? "Cadeia: Growth & Investimento" : "Chain: Growth & Investment"}
-                subtitle="Fundo · Shield Tech · Gateways"
-                color="green"
-                steps={[
-                  { label: lang === "pt" ? "Tese" : "Thesis", desc: lang === "pt" ? "Infraestrutura > features. Sistemas > produtos. Parceria com gateways de pagamento e investidor da Shield Tech" : "Infrastructure > features. Systems > products. Payment gateway partnerships & Shield Tech investor", icon: Brain },
-                  { label: lang === "pt" ? "Diligência" : "Diligence", desc: lang === "pt" ? "Avaliar fundadores pela qualidade do sistema. Sócio de CEOs com exits acima de R$ 1BI" : "Evaluate founders by system quality. Partner of CEOs with exits above R$ 1BI", icon: Shield },
-                  { label: lang === "pt" ? "Alocação" : "Allocation", desc: lang === "pt" ? "Capital + infraestrutura de IA + networking nacional como valor agregado" : "Capital + AI infrastructure + nationwide networking as added value", icon: Target },
-                  { label: lang === "pt" ? "Operação" : "Operation", desc: lang === "pt" ? "Board ativo. Estrutura 360°. Decisões de arquitetura com visão completa do negócio" : "Active board. 360° structure. Architecture decisions with full business vision", icon: Layers },
-                  { label: lang === "pt" ? "Retorno" : "Return", desc: lang === "pt" ? "10+ empresas. Portfólio escalável. Network com operadores de exits bilionários" : "10+ companies. Scalable portfolio. Network with billion-dollar exit operators", icon: TrendingUp },
-                ]}
-              />
-            </div>
-          </Reveal>
-
           {/* Anti-portfolio */}
           <Reveal delay={0.2}>
             <div className="mt-12 border-gradient rounded-lg p-6 sm:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <Shield className="w-4 h-4 text-white/20" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">{tx.antiTitle}</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">{tx.antiTitle}</span>
               </div>
-              <p className="text-xs text-white/20 mb-6">{tx.antiSub}</p>
+              <p className="text-xs text-white/30 mb-6">{tx.antiSub}</p>
               <div className="space-y-3">
                 {antiItems.map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <div className="w-1 h-1 rounded-full bg-red-500/30" />
-                    <span className="text-sm text-white/30">{item}</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500/40" />
+                    <span className="text-sm text-white/40">{item}</span>
                   </div>
                 ))}
               </div>
@@ -1159,10 +1257,10 @@ export default function SubstratoPage() {
           <Reveal>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-px bg-gradient-to-r from-white/15 to-transparent" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">04 — Stack</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">04 — Stack</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-4 text-white/90">{tx.stackTitle}</h2>
-            <p className="text-sm text-white/25 max-w-lg mb-16 leading-relaxed">{tx.stackSub}</p>
+            <p className="text-sm text-white/35 max-w-lg mb-16 leading-relaxed">{tx.stackSub}</p>
           </Reveal>
           <div className="space-y-4">
             {stackLayers.map((layer, i) => (
@@ -1173,10 +1271,10 @@ export default function SubstratoPage() {
                   </div>
                   <div className="flex-1">
                     <div className="flex items-baseline gap-3 mb-1">
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-white/15">Layer {i}</span>
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-white/20">Layer {i}</span>
                       <h3 className="text-sm font-mono text-white/80">{layer.name}</h3>
                     </div>
-                    <p className="text-xs text-white/25 font-mono">{layer.tools}</p>
+                    <p className="text-xs text-white/35 font-mono">{layer.tools}</p>
                   </div>
                 </div>
               </Reveal>
@@ -1191,7 +1289,7 @@ export default function SubstratoPage() {
           <Reveal>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-px bg-gradient-to-r from-white/15 to-transparent" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">05 — {tx.sinal}</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">05 — {tx.sinal}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-16 text-white/90">{tx.sinalTitle}</h2>
           </Reveal>
@@ -1200,11 +1298,11 @@ export default function SubstratoPage() {
             {signals.map((q, i) => (
               <Reveal key={i} delay={i * 0.06}>
                 <div className="flex items-start gap-6 sm:gap-8 group">
-                  <span className="font-mono text-[10px] text-white/8 mt-2 shrink-0">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="font-mono text-[10px] text-white/15 mt-2 shrink-0">{String(i + 1).padStart(2, "0")}</span>
                   <div className="relative">
-                    <div className="absolute -left-4 top-0 w-px h-full bg-gradient-to-b from-white/12 via-white/3 to-transparent" />
-                    <p className="text-lg sm:text-xl md:text-2xl font-light text-white/45 group-hover:text-white/70 transition-colors duration-700 leading-relaxed mb-2">{q.text}</p>
-                    <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/12">{q.tag}</span>
+                    <div className="absolute -left-4 top-0 w-px h-full bg-gradient-to-b from-white/20 via-white/5 to-transparent" />
+                    <p className="text-lg sm:text-xl md:text-2xl font-light text-white/50 group-hover:text-white/75 transition-colors duration-700 leading-relaxed mb-2">{q.text}</p>
+                    <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/20">{q.tag}</span>
                   </div>
                 </div>
               </Reveal>
@@ -1216,17 +1314,17 @@ export default function SubstratoPage() {
             <div className="border-gradient rounded-lg p-8">
               <div className="flex items-center gap-3 mb-6">
                 <Terminal className="w-4 h-4 text-white/20" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">{tx.logTitle}</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">{tx.logTitle}</span>
               </div>
               <p className="text-xs text-white/15 mb-6">{tx.logSub}</p>
               <div className="space-y-4">
                 {logEntries.map((entry, i) => (
                   <div key={i} className="flex items-start gap-4 group">
-                    <span className="font-mono text-[10px] text-white/12 mt-0.5 shrink-0">{entry.date}</span>
+                    <span className="font-mono text-[10px] text-white/20 mt-0.5 shrink-0">{entry.date}</span>
                     <div className="flex-1">
-                      <p className="text-sm text-white/35 group-hover:text-white/50 transition-colors leading-relaxed">{entry.text}</p>
+                      <p className="text-sm text-white/40 group-hover:text-white/60 transition-colors leading-relaxed">{entry.text}</p>
                     </div>
-                    <span className="font-mono text-[9px] uppercase tracking-wider text-white/10 shrink-0 border border-white/5 rounded px-2 py-0.5">{entry.tag}</span>
+                    <span className="font-mono text-[9px] uppercase tracking-wider text-white/20 shrink-0 border border-white/10 rounded px-2 py-0.5">{entry.tag}</span>
                   </div>
                 ))}
               </div>
@@ -1241,17 +1339,17 @@ export default function SubstratoPage() {
           <Reveal>
             <div className="flex items-center justify-center gap-3 mb-16">
               <div className="w-12 h-px bg-gradient-to-r from-transparent to-white/15" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">06 — {tx.gateway}</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">06 — {tx.gateway}</span>
               <div className="w-12 h-px bg-gradient-to-r from-white/15 to-transparent" />
             </div>
           </Reveal>
           <Reveal delay={0.1}>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-8 text-white/90 leading-[1.2]">
-              {tx.gatewayTitle1}<br /><span className="text-white/35">{tx.gatewayTitle2}</span>
+              {tx.gatewayTitle1}<br /><span className="text-white/45">{tx.gatewayTitle2}</span>
             </h2>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="text-sm text-white/25 max-w-md mx-auto mb-6 leading-[1.8]">{tx.gatewaySub}</p>
+            <p className="text-sm text-white/35 max-w-md mx-auto mb-6 leading-[1.8]">{tx.gatewaySub}</p>
           </Reveal>
           <Reveal delay={0.3}>
             <div className="flex items-center justify-center gap-2 mb-12">
@@ -1267,11 +1365,11 @@ export default function SubstratoPage() {
 
           <Reveal delay={0.45}>
             <div className="flex items-center gap-4 my-10 max-w-xs mx-auto">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent to-white/8" />
-              <span className="font-mono text-[9px] text-white/12 uppercase tracking-wider">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent to-white/10" />
+              <span className="font-mono text-[9px] text-white/20 uppercase tracking-wider">
                 {lang === "pt" ? "ou" : "or"}
               </span>
-              <div className="flex-1 h-px bg-gradient-to-r from-white/8 to-transparent" />
+              <div className="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent" />
             </div>
           </Reveal>
 
@@ -1286,14 +1384,14 @@ export default function SubstratoPage() {
           {/* Investment thesis */}
           <Reveal delay={0.3}>
             <div className="mt-24 border-gradient rounded-lg p-8 text-left max-w-lg mx-auto">
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/15 mb-6 block">{tx.investTitle}</span>
-              <p className="text-xs text-white/15 mb-6">{tx.investSub}</p>
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25 mb-6 block">{tx.investTitle}</span>
+              <p className="text-xs text-white/30 mb-6">{tx.investSub}</p>
               <div className="space-y-4">
                 {investData.map((d, i) => (
                   <div key={i} className="flex items-baseline justify-between gap-4">
-                    <span className="text-xs text-white/20 shrink-0">{d.label}</span>
-                    <div className="flex-1 border-b border-dotted border-white/5" />
-                    <span className="font-mono text-xs text-white/45 text-right">{d.value}</span>
+                    <span className="text-xs text-white/30 shrink-0">{d.label}</span>
+                    <div className="flex-1 border-b border-dotted border-white/8" />
+                    <span className="font-mono text-xs text-white/55 text-right">{d.value}</span>
                   </div>
                 ))}
               </div>
@@ -1311,20 +1409,20 @@ export default function SubstratoPage() {
       />
 
       {/* ═══ FOOTER — META ═══ */}
-      <footer className="py-16 pb-24 xl:pb-16 px-6 border-t border-white/[0.03]">
+      <footer className="py-16 pb-24 xl:pb-16 px-6 border-t border-white/[0.05]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
-            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/10">{tx.metaTitle}</span>
-            <p className="font-mono text-[10px] text-white/8 mt-3 max-w-md mx-auto leading-relaxed">{tx.metaSub}</p>
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25">{tx.metaTitle}</span>
+            <p className="font-mono text-[10px] text-white/20 mt-3 max-w-md mx-auto leading-relaxed">{tx.metaSub}</p>
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-white/[0.02]">
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/8">GTZEN — Substrato v3.0</span>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-white/[0.06]">
+            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/20">GTZEN — Substrato v3.0</span>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1.5">
-                <div className="w-1 h-1 rounded-full bg-green-500/30" />
-                <span className="font-mono text-[8px] text-white/8">ONLINE</span>
+                <div className="w-1 h-1 rounded-full bg-green-500/50" />
+                <span className="font-mono text-[8px] text-white/20">ONLINE</span>
               </div>
-              <span className="font-mono text-[8px] text-white/6">{new Date().getFullYear()}</span>
+              <span className="font-mono text-[8px] text-white/15">{new Date().getFullYear()}</span>
             </div>
           </div>
         </div>

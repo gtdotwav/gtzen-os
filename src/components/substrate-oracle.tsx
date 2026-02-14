@@ -839,8 +839,8 @@ export function SubstrateOracle({ isOpen, onClose, lang, agentId }: SubstrateOra
    ORACLE TRIGGER BUTTON
    ═══════════════════════════════════════ */
 export function OracleTrigger({ onClick, lang }: { onClick: () => void; lang: Lang }) {
-  const text = lang === "pt" ? "Acesse o Conhecimento do Substrato" : "Access the Substrate Knowledge"
-  const sub = lang === "pt" ? "Chat com IA · Chamada ao vivo · Sem formulários" : "AI Chat · Live Call · No forms"
+  const text = lang === "pt" ? "Fale com o Substrato" : "Talk to the Substrate"
+  const sub = lang === "pt" ? "IA conversacional · Voz ao vivo · Zero formulários" : "Conversational AI · Live voice · Zero forms"
 
   return (
     <motion.div
@@ -851,40 +851,47 @@ export function OracleTrigger({ onClick, lang }: { onClick: () => void; lang: La
     >
       <button
         onClick={onClick}
-        className="group relative w-full max-w-md mx-auto flex flex-col items-center gap-4 py-8 px-10 rounded-xl border border-white/[0.06] hover:border-white/[0.15] transition-all duration-700 overflow-hidden"
+        className="group relative w-full max-w-md mx-auto flex flex-col items-center gap-5 py-10 px-10 rounded-2xl border border-white/[0.08] hover:border-white/[0.18] transition-all duration-700 overflow-hidden"
         style={{
-          background: "linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.005) 100%)",
+          background: "linear-gradient(180deg, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0.005) 100%)",
         }}
       >
+        {/* Hover glow */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-          <div className="absolute inset-0 bg-gradient-to-t from-white/[0.02] to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white/[0.03] to-transparent" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full bg-white/[0.02] blur-3xl" />
         </div>
 
+        {/* Icon */}
         <div className="relative">
-          <div className="w-14 h-14 rounded-xl bg-white/[0.04] flex items-center justify-center group-hover:bg-white/[0.08] transition-all duration-500">
-            <Brain className="w-6 h-6 text-white/30 group-hover:text-white/60 transition-colors duration-500" />
+          <div className="w-16 h-16 rounded-2xl bg-white/[0.05] flex items-center justify-center group-hover:bg-white/[0.1] transition-all duration-500 border border-white/[0.06] group-hover:border-white/[0.12]">
+            <Brain className="w-7 h-7 text-white/35 group-hover:text-white/65 transition-colors duration-500" />
           </div>
-          <div className="absolute inset-0 rounded-xl border border-white/[0.08] animate-ping opacity-20" />
+          <div className="absolute inset-0 rounded-2xl border border-white/[0.06] animate-ping opacity-15" />
+          <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-green-500/50 animate-pulse border-2 border-black" />
         </div>
 
-        <div className="relative z-10 space-y-1.5">
-          <span className="text-sm text-white/55 group-hover:text-white/80 transition-colors duration-500 block">
+        {/* Text */}
+        <div className="relative z-10 space-y-2">
+          <span className="text-base text-white/60 group-hover:text-white/85 transition-colors duration-500 block font-light">
             {text}
           </span>
-          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/15 group-hover:text-white/25 transition-colors block">
+          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/20 group-hover:text-white/30 transition-colors block">
             {sub}
           </span>
         </div>
 
-        <div className="flex items-center gap-4 relative z-10">
-          <div className="flex items-center gap-1.5">
-            <MessageSquare className="w-3 h-3 text-white/15" />
-            <span className="font-mono text-[8px] text-white/10 uppercase tracking-wider">chat</span>
+        {/* Mode indicators */}
+        <div className="flex items-center gap-5 relative z-10">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.02] group-hover:bg-white/[0.04] transition-all border border-transparent group-hover:border-white/[0.06]">
+            <MessageSquare className="w-3 h-3 text-white/20 group-hover:text-white/40 transition-colors" />
+            <span className="font-mono text-[8px] text-white/15 group-hover:text-white/30 uppercase tracking-wider transition-colors">chat</span>
           </div>
-          <div className="w-px h-3 bg-white/5" />
-          <div className="flex items-center gap-1.5">
-            <Phone className="w-3 h-3 text-white/15" />
-            <span className="font-mono text-[8px] text-white/10 uppercase tracking-wider">call</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.02] group-hover:bg-white/[0.04] transition-all border border-transparent group-hover:border-white/[0.06]">
+            <Phone className="w-3 h-3 text-white/20 group-hover:text-white/40 transition-colors" />
+            <span className="font-mono text-[8px] text-white/15 group-hover:text-white/30 uppercase tracking-wider transition-colors">
+              {lang === "pt" ? "voz" : "voice"}
+            </span>
           </div>
         </div>
       </button>
