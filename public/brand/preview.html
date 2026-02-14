@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Substrato Brand Assets</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; color: #fff; font-family: 'Inter', system-ui, sans-serif; padding: 48px; }
+  h1 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.4em; opacity: 0.3; margin-bottom: 48px; font-weight: 300; }
+  h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.3em; opacity: 0.25; margin-bottom: 16px; font-weight: 400; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 56px; }
+  .card { border-radius: 12px; padding: 48px 32px; display: flex; align-items: center; justify-content: center; min-height: 160px; position: relative; }
+  .card.light { background: #fff; }
+  .card.dark { background: #0a0a0a; border: 1px solid #1a1a1a; }
+  .card img, .card object { max-width: 100%; height: auto; max-height: 100px; }
+  .card .label { position: absolute; bottom: 12px; left: 16px; font-size: 9px; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.3; }
+  .card.light .label { color: #000; }
+  .sizes { display: flex; gap: 32px; align-items: flex-end; margin-bottom: 56px; }
+  .sz { text-align: center; }
+  .sz img { display: block; margin: 0 auto 8px; background: #222; border-radius: 4px; padding: 4px; }
+  .sz span { font-size: 10px; opacity: 0.3; }
+</style>
+</head>
+<body>
+
+<h1>Substrato Brand Kit</h1>
+
+<h2>Icon (Logomark)</h2>
+<div class="grid">
+  <div class="card light">
+    <img src="substrato-icon.svg" alt="Icon Black">
+    <span class="label">icon / black</span>
+  </div>
+  <div class="card dark">
+    <img src="substrato-icon-white.svg" alt="Icon White">
+    <span class="label">icon / white</span>
+  </div>
+</div>
+
+<h2>Full Logo (Icon + Wordmark)</h2>
+<div class="grid">
+  <div class="card light">
+    <img src="substrato-logo.svg" alt="Logo Black">
+    <span class="label">logo / black</span>
+  </div>
+  <div class="card dark">
+    <img src="substrato-logo-white.svg" alt="Logo White">
+    <span class="label">logo / white</span>
+  </div>
+</div>
+
+<h2>Wordmark</h2>
+<div class="grid">
+  <div class="card light">
+    <img src="substrato-wordmark.svg" alt="Wordmark Black">
+    <span class="label">wordmark / black</span>
+  </div>
+  <div class="card dark">
+    <img src="substrato-wordmark-white.svg" alt="Wordmark White">
+    <span class="label">wordmark / white</span>
+  </div>
+</div>
+
+<h2>Favicon Scale Test</h2>
+<div class="sizes">
+  <div class="sz"><img src="favicon-16.png" width="16" height="16"><span>16px</span></div>
+  <div class="sz"><img src="favicon-32.png" width="32" height="32"><span>32px</span></div>
+  <div class="sz"><img src="substrato-icon-512.png" width="64" height="64"><span>512→64</span></div>
+  <div class="sz"><img src="substrato-icon-512.png" width="128" height="128"><span>512→128</span></div>
+</div>
+
+</body>
+</html>

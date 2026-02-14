@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 40" fill="none">
+  <!-- Substrato Wordmark — Opacity Encoded (SUB 30% / STRATO 100%) -->
+  <text x="0" y="28" font-family="'Inter', 'Geist', 'Satoshi', 'General Sans', system-ui, sans-serif" font-size="24" font-weight="300" letter-spacing="0.25em">
+    <tspan fill="#000" opacity="0.3">SUB</tspan><tspan fill="#000" opacity="1">STRATO</tspan>
+  </text>
+</svg>
