@@ -203,16 +203,18 @@ export default function CallMode({ agentId, lang, tx, onTranscript, autoGreeting
 
       const conversation = await mod.Conversation.startSession({
         ...sessionConfig,
-        onConnect: () => {
+        onConnect: ({ conversationId }: { conversationId: string }) => {
+          console.log("[Substrato] Connected:", conversationId)
           setStatus("connected")
-          onTranscript("oracle", autoGreeting
-            ? (lang === "pt" ? greetingPt : greetingEn)
-            : (lang === "pt"
+          if (!autoGreeting) {
+            onTranscript("oracle", lang === "pt"
               ? "Conectado. Estou ouvindo — fale naturalmente sobre o que te trouxe aqui."
-              : "Connected. I'm listening — speak naturally about what brought you here.")
-          )
+              : "Connected. I'm listening — speak naturally about what brought you here."
+            )
+          }
         },
-        onDisconnect: () => {
+        onDisconnect: (details: any) => {
+          console.log("[Substrato] Disconnected:", details?.reason || "unknown")
           setStatus("idle")
           conversationRef.current = null
           onTranscript("oracle", lang === "pt"
@@ -220,17 +222,20 @@ export default function CallMode({ agentId, lang, tx, onTranscript, autoGreeting
             : "Call ended. To continue, start a new call or use chat."
           )
         },
-        onMessage: (message: any) => {
-          if (message?.message) {
-            const role = message.source === "user" ? "user" as const : "oracle" as const
-            onTranscript(role, message.message)
+        onMessage: (payload: { message: string; source: string; role: string }) => {
+          if (payload?.message) {
+            const role = payload.source === "user" || payload.role === "user" ? "user" as const : "oracle" as const
+            onTranscript(role, payload.message)
           }
         },
-        onModeChange: (mode: any) => {
-          setIsSpeaking(mode?.mode === "speaking")
+        onModeChange: ({ mode }: { mode: string }) => {
+          setIsSpeaking(mode === "speaking")
         },
-        onError: (error: any) => {
-          console.error("ElevenLabs error:", error)
+        onStatusChange: ({ status: newStatus }: { status: string }) => {
+          console.log("[Substrato] Status:", newStatus)
+        },
+        onError: (message: string, context?: any) => {
+          console.error("[Substrato] Error:", message, context)
           setStatus("error")
           conversationRef.current = null
           onTranscript("oracle", lang === "pt"
@@ -269,7 +274,7 @@ export default function CallMode({ agentId, lang, tx, onTranscript, autoGreeting
       onTranscript("oracle", userMessage)
       setTimeout(() => setStatus("idle"), 4000)
     }
-  }, [agentId, onTranscript, lang])
+  }, [agentId, onTranscript, lang, autoGreeting])
 
   const handleEndCall = useCallback(async () => {
     if (conversationRef.current) {
