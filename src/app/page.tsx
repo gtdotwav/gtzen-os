@@ -1209,7 +1209,7 @@ export default function SubstratoPage() {
                       accent: "text-blue-400/50",
                     },
                     {
-                      year: "2022",
+                      year: "2025–26",
                       title: lang === "pt" ? "Fundação da PAI" : "PAI Founded",
                       desc: lang === "pt" ? "Partners in A.I — empresa de inteligência artificial aplicada. De conceito a pipeline com 7+ clientes e 85% de decisões automatizadas." : "Partners in A.I — applied artificial intelligence company. From concept to pipeline with 7+ clients and 85% automated decisions.",
                       icon: Brain,
