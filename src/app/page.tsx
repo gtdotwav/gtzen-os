@@ -41,6 +41,11 @@ const ShaderBackground = dynamic(() => import("@/components/shader-background"),
   ssr: false,
 })
 
+const SubmundoDashboard = dynamic(
+  () => import("@/components/submundo-dashboard").then((m) => ({ default: m.SubmundoDashboard })),
+  { ssr: false },
+)
+
 /* ═══════════════════════════════════════
    TRANSLATIONS
    ═══════════════════════════════════════ */
@@ -204,7 +209,7 @@ function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
 /* ═══════════════════════════════════════
    TERMINAL EASTER EGG (Ctrl+K)
    ═══════════════════════════════════════ */
-function TerminalOverlay({ isOpen, onClose, lang }: { isOpen: boolean; onClose: () => void; lang: Lang }) {
+function TerminalOverlay({ isOpen, onClose, lang, onSubmundo }: { isOpen: boolean; onClose: () => void; lang: Lang; onSubmundo?: () => void }) {
   const [input, setInput] = useState("")
   const [history, setHistory] = useState<{ cmd: string; out: string }[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
@@ -217,7 +222,7 @@ function TerminalOverlay({ isOpen, onClose, lang }: { isOpen: boolean; onClose: 
   }, [isOpen])
 
   const commands: Record<string, string> = {
-    help: "Available: about, skills, projects, stack, contact, philosophy, clear",
+    help: "Available: about, skills, projects, stack, contact, philosophy, submundo, clear",
     about: "Geander · 22 · Polyglot (PT/EN/ES) · Lived in the US · CEO & Founder of PAI (Partners in A.I) · Fund partner with 10+ portfolio companies · Payment gateway partnerships · Network with CEOs of billion-dollar exits · Systems thinker · Builder",
     skills: "Branding Strategy · Applied AI · E-commerce & Performance · Product Architecture · Automation & Prompt Engineering · Digital Ecosystems · Business Strategy",
     projects: "001 DryOn (Allpharma) → Full brand system (branding + ecommerce + narrative)\n002 PAI → Partners in A.I — applied AI infrastructure company\n003 Investment Fund → 10+ companies in portfolio, active board roles\n004 Digital Assets → Self-operating portfolio of scalable products",
@@ -231,6 +236,11 @@ function TerminalOverlay({ isOpen, onClose, lang }: { isOpen: boolean; onClose: 
     const c = cmd.trim().toLowerCase()
     if (c === "clear") {
       setHistory([])
+      return
+    }
+    if (c === "submundo") {
+      setHistory((p) => [...p, { cmd, out: "> Accessing submundo... granted." }])
+      setTimeout(() => { onSubmundo?.(); onClose() }, 600)
       return
     }
     const out = commands[c] || `Command not found: ${c}. Type 'help' for available commands.`
@@ -702,6 +712,9 @@ export default function SubstratoPage() {
   const [activeSection, setActiveSection] = useState(0)
   const [terminalOpen, setTerminalOpen] = useState(false)
   const [oracleOpen, setOracleOpen] = useState(false)
+  const [submundoOpen, setSubmundoOpen] = useState(false)
+  const avatarClickCount = useRef(0)
+  const avatarClickTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const cursorX = useMotionValue(-200)
   const cursorY = useMotionValue(-200)
@@ -973,7 +986,7 @@ export default function SubstratoPage() {
     <main className="relative min-h-screen bg-black text-white">
       <ScrollProgress />
       <SectionNav active={activeSection} sections={sectionNames} />
-      <TerminalOverlay isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} lang={lang} />
+      <TerminalOverlay isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} lang={lang} onSubmundo={() => setSubmundoOpen(true)} />
 
       {/* Language toggle + terminal hint */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-3">
@@ -1107,10 +1120,26 @@ export default function SubstratoPage() {
               <div className="border-gradient rounded-xl p-6 sm:p-8 h-full">
                 {/* Profile header */}
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="relative">
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] flex items-center justify-center border border-white/[0.06]">
+                  <div
+                    className="relative cursor-pointer select-none"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      avatarClickCount.current += 1
+                      if (avatarClickTimer.current) clearTimeout(avatarClickTimer.current)
+                      // Reset after 2s of no clicks
+                      avatarClickTimer.current = setTimeout(() => { avatarClickCount.current = 0 }, 2000)
+                      if (avatarClickCount.current >= 3) {
+                        avatarClickCount.current = 0
+                        setSubmundoOpen(true)
+                      }
+                    }}
+                  >
+                    <motion.div
+                      whileTap={{ scale: 0.92 }}
+                      className="w-16 h-16 rounded-xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] flex items-center justify-center border border-white/[0.06] transition-all duration-300 hover:border-white/[0.12]"
+                    >
                       <span className="font-mono text-2xl font-light text-white/70">G</span>
-                    </div>
+                    </motion.div>
                     <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500/60 border-2 border-black animate-pulse" />
                   </div>
                   <div>
@@ -1531,6 +1560,13 @@ export default function SubstratoPage() {
         onClose={() => setOracleOpen(false)}
         lang={lang}
         agentId={process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID}
+      />
+
+      {/* ═══ SUBMUNDO DASHBOARD ═══ */}
+      <SubmundoDashboard
+        isOpen={submundoOpen}
+        onClose={() => setSubmundoOpen(false)}
+        lang={lang}
       />
 
       {/* ═══ FOOTER — META ═══ */}
