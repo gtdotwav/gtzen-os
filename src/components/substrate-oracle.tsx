@@ -151,7 +151,7 @@ const conversationFlows: Record<Lang, Record<string, FlowNode>> = {
       responses: [
         "Esse é exatamente o tipo de pensamento que separa operadores de arquitetos.",
         "Um sistema que opera sozinho precisa de 4 camadas: visão clara, arquitetura de decisão, execução automatizada, e feedback loops.",
-        "O Geander construiu isso para a PAI, para a DryOn, e para mais de 10 empresas no portfólio — com parceria em gateways de pagamento, investimento na Shield Tech, e networking com CEOs de exits bilionários. Não é teoria — é infraestrutura em produção.",
+        "O Geander construiu isso para a PAI, para a DryOn (marca da Allpharma), e para mais de 10 empresas no portfólio — com parceria em gateways de pagamento e networking com CEOs de exits bilionários. Não é teoria — é infraestrutura em produção.",
         "Qual é o sistema que você quer construir? Me dê contexto.",
       ],
       followUp: "scale_detail",
@@ -222,7 +222,7 @@ const conversationFlows: Record<Lang, Record<string, FlowNode>> = {
       responses: [
         "That's exactly the thinking that separates operators from architects.",
         "A self-operating system needs 4 layers: clear vision, decision architecture, automated execution, and feedback loops.",
-        "Geander built this for PAI, DryOn, and 10+ portfolio companies — with payment gateway partnerships, Shield Tech investment, and a network including CEOs of billion-dollar exits. Not theory — infrastructure in production.",
+        "Geander built this for PAI, DryOn (Allpharma's brand), and 10+ portfolio companies — with payment gateway partnerships and a network including CEOs of billion-dollar exits. Not theory — infrastructure in production.",
         "What system do you want to build? Give me context.",
       ],
       followUp: "scale_detail",

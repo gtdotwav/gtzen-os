@@ -52,14 +52,14 @@ const t = {
     headline3: "Eu construo a",
     headline4: "infraestrutura",
     headline5: "por trás deles.",
-    sub: "22 anos. Poliglota. CEO da PAI (Partners in A.I). Sócio de fundos com 10+ empresas. Investidor em gateways de pagamento e Shield Tech. Network com CEOs de exits bilionários. Construo sistemas que pensam, marcas que escalam, e infraestrutura que dura.",
+    sub: "22 anos. Poliglota. CEO da PAI (Partners in A.I). Sócio de fundos com 10+ empresas. Investidor em gateways de pagamento. Network com CEOs de exits bilionários. Construo sistemas que pensam, marcas que escalam, e infraestrutura que dura.",
     scroll: "descer para entrar",
     terminalHint: "Pressione Ctrl+K para abrir o terminal",
     tese: "Tese",
     teseTitle1: "A maioria constrói features.",
     teseTitle2: "Eu construo as condições",
     teseTitle3: "para que features tenham razão de existir.",
-    teseBody: "Aos 22, já morei nos EUA estudando, construí a PAI — uma empresa de inteligência artificial aplicada —, opero como sócio de fundos de investimento com mais de 10 empresas em portfólio, sou investidor em gateways de pagamento e na Shield Tech, e mantenho networking com CEOs que consolidaram e venderam empresas por valores acima de R$ 1 bilhão. Falo múltiplos idiomas. Conheço todas as áreas necessárias para consolidar uma estrutura 360°. Não sou designer. Não sou desenvolvedor. Não sou marqueteiro. Sou a camada que conecta tudo isso — o substrato.",
+    teseBody: "Aos 22, já morei nos EUA estudando, construí a PAI — uma empresa de inteligência artificial aplicada —, opero como sócio de fundos de investimento com mais de 10 empresas em portfólio, sou investidor em gateways de pagamento, e mantenho networking com CEOs que consolidaram e venderam empresas por valores acima de R$ 1 bilhão. Falo múltiplos idiomas. Conheço todas as áreas necessárias para consolidar uma estrutura 360°. Não sou designer. Não sou desenvolvedor. Não sou marqueteiro. Sou a camada que conecta tudo isso — o substrato.",
     teseQuote: "O substrato não aparece no produto final. Mas sem ele, o produto não existe.",
     framework: "Como Penso",
     frameworkTitle: "O framework",
@@ -105,14 +105,14 @@ const t = {
     headline3: "I build the",
     headline4: "infrastructure",
     headline5: "behind them.",
-    sub: "22 years old. Polyglot. CEO of PAI (Partners in A.I). Fund partner with 10+ companies. Payment gateway investor & Shield Tech partner. Network with billion-dollar exit CEOs. I build systems that think, brands that scale, and infrastructure that lasts.",
+    sub: "22 years old. Polyglot. CEO of PAI (Partners in A.I). Fund partner with 10+ companies. Payment gateway investor. Network with billion-dollar exit CEOs. I build systems that think, brands that scale, and infrastructure that lasts.",
     scroll: "scroll to enter",
     terminalHint: "Press Ctrl+K to open terminal",
     tese: "Thesis",
     teseTitle1: "Most people build features.",
     teseTitle2: "I build the conditions",
     teseTitle3: "for features to have a reason to exist.",
-    teseBody: "At 22, I've lived in the US studying, built PAI — an applied artificial intelligence company —, operate as a fund partner with 10+ portfolio companies, invest in payment gateways and Shield Tech, and maintain a network with CEOs who've built and sold companies for over R$ 1 billion. I speak multiple languages and understand every layer needed to consolidate a 360° structure. I'm not a designer. Not a developer. Not a marketer. I'm the layer that connects all of it — the substrate.",
+    teseBody: "At 22, I've lived in the US studying, built PAI — an applied artificial intelligence company —, operate as a fund partner with 10+ portfolio companies, invest in payment gateways, and maintain a network with CEOs who've built and sold companies for over R$ 1 billion. I speak multiple languages and understand every layer needed to consolidate a 360° structure. I'm not a designer. Not a developer. Not a marketer. I'm the layer that connects all of it — the substrate.",
     teseQuote: "The substrate doesn't show in the final product. But without it, the product doesn't exist.",
     framework: "How I Think",
     frameworkTitle: "The framework",
@@ -218,9 +218,9 @@ function TerminalOverlay({ isOpen, onClose, lang }: { isOpen: boolean; onClose: 
 
   const commands: Record<string, string> = {
     help: "Available: about, skills, projects, stack, contact, philosophy, clear",
-    about: "Geander · 22 · Polyglot (PT/EN/ES) · Lived in the US · CEO & Founder of PAI (Partners in A.I) · Fund partner with 10+ portfolio companies · Shield Tech investor · Payment gateway partnerships · Network with CEOs of billion-dollar exits · Systems thinker · Builder",
+    about: "Geander · 22 · Polyglot (PT/EN/ES) · Lived in the US · CEO & Founder of PAI (Partners in A.I) · Fund partner with 10+ portfolio companies · Payment gateway partnerships · Network with CEOs of billion-dollar exits · Systems thinker · Builder",
     skills: "Branding Strategy · Applied AI · E-commerce & Performance · Product Architecture · Automation & Prompt Engineering · Digital Ecosystems · Business Strategy",
-    projects: "001 DryOn → Full brand system (branding + ecommerce + narrative)\n002 PAI → Partners in A.I — applied AI infrastructure company\n003 Investment Fund → 10+ companies in portfolio, active board roles\n004 Digital Assets → Self-operating portfolio of scalable products",
+    projects: "001 DryOn (Allpharma) → Full brand system (branding + ecommerce + narrative)\n002 PAI → Partners in A.I — applied AI infrastructure company\n003 Investment Fund → 10+ companies in portfolio, active board roles\n004 Digital Assets → Self-operating portfolio of scalable products",
     stack: "DECISION: First principles + Systems thinking\nCREATION: AI pipelines + Prompt architecture\nDISTRIBUTION: Performance marketing + E-commerce\nAUTOMATION: n8n + Custom LLM chains + API orchestration",
     contact: "→ businessgeander@gmail.com\n→ Open for 1 strategic partnership in Q1 2026",
     philosophy: "\"Build systems, not products. The system survives you. The product doesn't.\"",
@@ -423,10 +423,10 @@ function TypingTerminal() {
    ═══════════════════════════════════════ */
 function ProofTicker({ lang }: { lang: Lang }) {
   const items = lang === "pt" ? [
-    "DryOn → HEAD de IA & Growth · sistema de marca completo",
+    "DryOn (Allpharma) → HEAD de IA & Growth · sistema de marca completo",
     "PAI (Partners in A.I) → CEO & Founder",
     "Fundo de Investimento → 10+ empresas em portfólio",
-    "Shield Tech → investidor · inovação em pagamentos · Rio/Brasil",
+    "Gateways → investidor · inovação em pagamentos · Rio/Brasil",
     "Sócio de CEOs → exits acima de R$ 1BI",
     "Infraestrutura IA → 85% decisões automatizadas",
     "Ativos Digitais → portfólio escalável em produção",
@@ -434,10 +434,10 @@ function ProofTicker({ lang }: { lang: Lang }) {
     "Gateways de Pagamento → parceria estratégica",
     "Estrutura 360° → conhecimento completo de todas as áreas",
   ] : [
-    "DryOn → HEAD of AI & Growth · complete brand system",
+    "DryOn (Allpharma) → HEAD of AI & Growth · complete brand system",
     "PAI (Partners in A.I) → CEO & Founder",
     "Investment Fund → 10+ portfolio companies",
-    "Shield Tech → investor · payment innovation · Rio/Brazil",
+    "Gateways → investor · payment innovation · Rio/Brazil",
     "CEO Partners → exits above R$ 1BI",
     "AI Infrastructure → 85% automated decisions",
     "Digital Assets → scalable portfolio in production",
@@ -768,8 +768,8 @@ export default function SubstratoPage() {
 
   const cases = [
     {
-      number: "001", title: "DryOn", color: "amber" as const,
-      thesis: "Uma marca de desodorantes não é sobre desodorantes. É sobre a narrativa de cuidado e identidade que o produto carrega. Como HEAD de IA & Growth, construí a DryOn como um sistema de marca completo — do site à esteira de conteúdo com IA.",
+      number: "001", title: "DryOn — Allpharma", color: "amber" as const,
+      thesis: "A DryOn é marca da Allpharma, indústria farmacêutica. Uma marca de desodorantes não é sobre desodorantes — é sobre a narrativa de cuidado e identidade que o produto carrega. Como HEAD de IA & Growth, construí a DryOn como um sistema de marca completo — do site à esteira de conteúdo com IA.",
       layers: ["branding", "e-commerce", "IA & growth", "narrativa", "performance"],
       result: "HEAD de IA & Growth · Marca operando como ecossistema",
       insight: "Tratar o produto como veículo de identidade, não commodity. Cada decisão de branding alimentava a performance — um loop, não sequência. A esteira de conteúdo com IA eliminou a dependência de equipe criativa manual.",
@@ -800,15 +800,15 @@ export default function SubstratoPage() {
     },
     {
       number: "003", title: "Portfólio de Investimentos", color: "green" as const,
-      thesis: "Sócio de fundos e investidor com parceria em gateways de pagamento — incluindo a Shield Tech, inovadores em tecnologia no Rio com networking nacional. Sócio de CEOs que venderam empresas por valores acima de R$ 1BI. Avalio tudo pela qualidade da infraestrutura, não do produto.",
+      thesis: "Sócio de fundos e investidor com parceria em gateways de pagamento e inovadores em tecnologia com networking nacional. Sócio de CEOs que venderam empresas por valores acima de R$ 1BI. Avalio tudo pela qualidade da infraestrutura, não do produto.",
       layers: ["venture", "gateways", "diligência", "escala", "governança 360°"],
       result: "10+ empresas em portfólio ativo · Parcerias com exits bilionários",
       insight: "A tese é simples: investir em fundadores que pensam em sistemas, não em funcionalidades. O produto muda. O sistema permanece. Com acesso a operadores que já consolidaram estruturas 360° em escala bilionária, o deal flow é outro nível.",
-      metrics: [{ label: "Empresas", value: "10+" }, { label: "Parcerias", value: "Shield Tech · Gateways" }, { label: "Network", value: "Exits >R$1BI" }, { label: "Papel", value: "Ativo · 360°" }],
+      metrics: [{ label: "Empresas", value: "10+" }, { label: "Parcerias", value: "Gateways · Tech" }, { label: "Network", value: "Exits >R$1BI" }, { label: "Papel", value: "Ativo · 360°" }],
       chain: [
         { label: lang === "pt" ? "Tese de Investimento" : "Investment Thesis", desc: lang === "pt" ? "Infraestrutura > features. Sistemas > produtos. Investir em quem pensa em arquitetura, não em funcionalidades bonitas" : "Infrastructure > features. Systems > products. Invest in those who think architecture, not pretty features", icon: Brain },
         { label: lang === "pt" ? "Due Diligence" : "Due Diligence", desc: lang === "pt" ? "Avaliar fundadores pela qualidade do sistema, não do produto. Sócios com exits acima de R$ 1BI validam o dealflow" : "Evaluate founders by system quality, not product. Partners with R$1BI+ exits validate dealflow", icon: Shield },
-        { label: lang === "pt" ? "Alocação Estratégica" : "Strategic Allocation", desc: lang === "pt" ? "Capital + infraestrutura de IA + networking nacional como valor agregado. Parceria com gateways de pagamento e Shield Tech" : "Capital + AI infra + nationwide network as added value. Partnership with payment gateways and Shield Tech", icon: Target },
+        { label: lang === "pt" ? "Alocação Estratégica" : "Strategic Allocation", desc: lang === "pt" ? "Capital + infraestrutura de IA + networking nacional como valor agregado. Parceria com gateways de pagamento e empresas de tecnologia" : "Capital + AI infra + nationwide network as added value. Partnership with payment gateways and tech companies", icon: Target },
         { label: lang === "pt" ? "Operação 360°" : "360° Operation", desc: lang === "pt" ? "Board ativo. Visão completa: branding, tech, growth, finanças. Decisões de arquitetura com conhecimento de todas as áreas" : "Active board. Complete vision: branding, tech, growth, finance. Architecture decisions with full-stack knowledge", icon: Layers },
         { label: lang === "pt" ? "Escala & Retorno" : "Scale & Return", desc: lang === "pt" ? "10+ empresas escalando. Portfólio em produção. Network com operadores de exits bilionários alimenta novas oportunidades" : "10+ companies scaling. Portfolio in production. Network with billion-exit operators feeds new opportunities", icon: TrendingUp },
       ],
@@ -872,18 +872,18 @@ export default function SubstratoPage() {
     { date: "2026.02", text: "Novo pipeline de decisão autônoma em produção na PAI. 3 clientes migrados.", tag: "infra" },
     { date: "2026.01", text: "Fechamento de 2 novos investimentos no fundo. Tese: infraestrutura > produto.", tag: "venture" },
     { date: "2025.12", text: "Substrato v3 — este site — projetado e construído como sistema, não como página.", tag: "meta" },
-    { date: "2025.11", text: "DryOn atingiu operação autônoma. Zero intervenção manual no funil.", tag: "escala" },
+    { date: "2025.11", text: "DryOn (Allpharma) atingiu operação autônoma. Zero intervenção manual no funil.", tag: "escala" },
   ] : [
     { date: "2026.02", text: "New autonomous decision pipeline in production at PAI. 3 clients migrated.", tag: "infra" },
     { date: "2026.01", text: "Closed 2 new fund investments. Thesis: infrastructure > product.", tag: "venture" },
     { date: "2025.12", text: "Substrate v3 — this site — designed and built as system, not as a page.", tag: "meta" },
-    { date: "2025.11", text: "DryOn reached autonomous operation. Zero manual funnel intervention.", tag: "scale" },
+    { date: "2025.11", text: "DryOn (Allpharma) reached autonomous operation. Zero manual funnel intervention.", tag: "scale" },
   ]
 
   const investData = [
     { label: lang === "pt" ? "Risco" : "Risk", value: lang === "pt" ? "Baixo — track record + sócios com exits >R$1BI" : "Low — track record + partners with >R$1BI exits" },
     { label: lang === "pt" ? "Retorno esperado" : "Expected return", value: lang === "pt" ? "Sistemas auto-operantes + infraestrutura de escala" : "Self-operating systems + scale infrastructure" },
-    { label: lang === "pt" ? "Diferencial" : "Edge", value: lang === "pt" ? "Visão 360° · Shield Tech · Gateways · Network nacional" : "360° vision · Shield Tech · Gateways · Nationwide network" },
+    { label: lang === "pt" ? "Diferencial" : "Edge", value: lang === "pt" ? "Visão 360° · Gateways · Tech · Network nacional" : "360° vision · Gateways · Tech · Nationwide network" },
     { label: lang === "pt" ? "Horizonte" : "Horizon", value: lang === "pt" ? "Longo prazo — infraestrutura > quick wins" : "Long term — infrastructure > quick wins" },
     { label: lang === "pt" ? "Network" : "Network", value: lang === "pt" ? "CEOs de exits bilionários · Fundos · Gateways de pagamento" : "Billion-exit CEOs · Funds · Payment gateways" },
   ]
@@ -1142,8 +1142,8 @@ export default function SubstratoPage() {
                   {[
                     { role: "CEO & Founder", org: "PAI — Partners in A.I", dot: "bg-blue-400/60" },
                     { role: lang === "pt" ? "Sócio de fundo" : "Fund Partner", org: lang === "pt" ? "Fundo de investimento · 10+ empresas" : "Investment fund · 10+ companies", dot: "bg-green-400/60" },
-                    { role: lang === "pt" ? "Investidor" : "Investor", org: "Shield Tech · Gateways", dot: "bg-amber-400/60" },
-                    { role: "HEAD IA & Growth", org: "DryOn", dot: "bg-purple-400/60" },
+                    { role: lang === "pt" ? "Investidor" : "Investor", org: lang === "pt" ? "Gateways de pagamento · Tech" : "Payment gateways · Tech", dot: "bg-amber-400/60" },
+                    { role: "HEAD IA & Growth", org: "DryOn — Allpharma", dot: "bg-purple-400/60" },
                   ].map((r, i) => (
                     <motion.div
                       key={i}
@@ -1195,15 +1195,15 @@ export default function SubstratoPage() {
                     },
                     {
                       year: "2024",
-                      title: lang === "pt" ? "Shield Tech & Gateways" : "Shield Tech & Gateways",
-                      desc: lang === "pt" ? "Investimento na Shield Tech e parcerias estratégicas com gateways de pagamento. Network com operadores de escala nacional." : "Shield Tech investment and strategic partnerships with payment gateways. Network with national-scale operators.",
+                      title: lang === "pt" ? "Investimentos & Gateways" : "Investments & Gateways",
+                      desc: lang === "pt" ? "Investimentos em tecnologia e parcerias estratégicas com gateways de pagamento. Network com operadores de escala nacional." : "Tech investments and strategic partnerships with payment gateways. Network with national-scale operators.",
                       icon: Shield,
                       accent: "text-amber-400/50",
                     },
                     {
                       year: "2025",
-                      title: lang === "pt" ? "DryOn · HEAD de IA & Growth" : "DryOn · HEAD of AI & Growth",
-                      desc: lang === "pt" ? "Sistema de marca completo — do branding à esteira IA de conteúdo. Operação autônoma atingida: zero intervenção manual no funil." : "Complete brand system — from branding to AI content pipeline. Autonomous operation achieved: zero manual funnel intervention.",
+                      title: lang === "pt" ? "DryOn (Allpharma) · HEAD de IA & Growth" : "DryOn (Allpharma) · HEAD of AI & Growth",
+                      desc: lang === "pt" ? "Marca da Allpharma (indústria farmacêutica). Sistema de marca completo — do branding à esteira IA de conteúdo. Operação autônoma atingida: zero intervenção manual no funil." : "Allpharma's brand (pharmaceutical industry). Complete brand system — from branding to AI content pipeline. Autonomous operation achieved: zero manual funnel intervention.",
                       icon: Rocket,
                       accent: "text-purple-400/50",
                     },
